@@ -1,0 +1,30 @@
+{
+  "TITLE": "Categories",
+  "SEE_MORE": "See more",
+  "items": {
+    "bailes": {
+      "title": "Dances",
+      "desc": "Identity and tradition expressed through movement."
+    },
+    "musica": {
+      "title": "Music",
+      "desc": "Sounds that tell the living story of Guanacaste folklore."
+    },
+    "retahileros": {
+      "title": "Rhymers",
+      "desc": "Popular storytellers preserving our oral roots."
+    },
+    "eventos": {
+      "title": "Events",
+      "desc": "Stages where history and tradition come alive."
+    },
+    "artesanos": {
+      "title": "Artisans",
+      "desc": "Hands that transform culture into unique pieces."
+    },
+    "haciendas": {
+      "title": "Haciendas",
+      "desc": "Architecture and tradition of the pampa."
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "TITLE": "Galería Cultural",
+  "SEE_MORE": "Ver más",
+  "items": {
+    "f1": { "alt": "Artesanos" },
+    "f2": { "alt": "Baile en parque" },
+    "f3": { "alt": "Fiestas nocturnas" },
+    "f4": { "alt": "Paisaje verde" },
+    "f5": { "alt": "Plaza llena" },
+    "f6": { "alt": "Bandera Guanacaste" }
+  }
+}

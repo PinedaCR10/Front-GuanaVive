@@ -1,0 +1,30 @@
+{
+  "TITLE": "Categorías",
+  "SEE_MORE": "Ver más",
+  "items": {
+    "bailes": {
+      "title": "Bailes",
+      "desc": "Expresiones de identidad y tradición a través del movimiento."
+    },
+    "musica": {
+      "title": "Música",
+      "desc": "Sonidos que cuentan la historia viva del folclor guanacasteco."
+    },
+    "retahileros": {
+      "title": "Retahileros",
+      "desc": "Narradores populares que preservan nuestras raíces orales."
+    },
+    "eventos": {
+      "title": "Eventos",
+      "desc": "Escenarios donde se vive la historia y tradición."
+    },
+    "artesanos": {
+      "title": "Artesanos",
+      "desc": "Manos que transforman cultura en piezas únicas."
+    },
+    "haciendas": {
+      "title": "Haciendas",
+      "desc": "Arquitectura y tradición de la pampa."
+    }
+  }
+}

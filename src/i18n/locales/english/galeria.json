@@ -1,0 +1,12 @@
+{
+  "TITLE": "Cultural Gallery",
+  "SEE_MORE": "See more",
+  "items": {
+    "f1": { "alt": "Artisans" },
+    "f2": { "alt": "Park dance" },
+    "f3": { "alt": "Night festivities" },
+    "f4": { "alt": "Green landscape" },
+    "f5": { "alt": "Crowded square" },
+    "f6": { "alt": "Guanacaste flag" }
+  }
+}

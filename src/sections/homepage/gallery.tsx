@@ -1,19 +1,22 @@
+// src/sections/homepage/gallery.tsx
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 type Foto = {
   id: string;
   src: string;
-  alt: string;
+  alt: string;     // texto por defecto si falta la traducción
   categoria?: string;
   canton?: string;
 };
 
 export default function Gallery() {
   const navigate = useNavigate();
+  const { t } = useTranslation("galeria");
 
-  // Orden y estilo como tu ejemplo (6 imágenes)
+  // 6 imágenes (orden fijo)
   const fotos: Foto[] = useMemo(
     () => [
       { id: "f1", src: "https://picsum.photos/seed/gv-a/1600/1100", alt: "Artesanos" },
@@ -27,11 +30,19 @@ export default function Gallery() {
   );
 
   return (
-    <section className="py-10 bg-gray-50">
+    <section
+      className="py-10"
+      style={{ background: "var(--bg)" }}   // ← modo oscuro/claro
+    >
       <div className="mx-auto max-w-[1200px] px-6 sm:px-8 lg:px-12">
-        <h2 className="mb-6 text-center text-3xl md:text-4xl font-extrabold">Galería Cultural</h2>
+        <h2
+          className="mb-6 text-center text-3xl md:text-4xl font-extrabold"
+          style={{ color: "var(--text)" }}
+        >
+          {t("TITLE", { defaultValue: "Galería Cultural" })}
+        </h2>
 
-        {/* Masonry simple por columnas (mantiene el orden visual de tu referencia) */}
+        {/* Masonry simple */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
           {fotos.map((f) => (
             <motion.figure
@@ -41,9 +52,18 @@ export default function Gallery() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.35 }}
               whileHover={{ y: -3, boxShadow: "0 18px 40px rgba(0,0,0,0.14)" }}
-              className="mb-6 break-inside-avoid rounded-2xl overflow-hidden shadow-md bg-white"
+              className="mb-6 break-inside-avoid rounded-2xl overflow-hidden shadow-md"
+              style={{
+                background: "var(--card)",
+                border: "1px solid var(--card-border)"
+              }}
             >
-              <img src={f.src} alt={f.alt} className="w-full h-auto object-cover" loading="lazy" />
+              <img
+                src={f.src}
+                alt={t(`items.${f.id}.alt`, { defaultValue: f.alt })}
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
             </motion.figure>
           ))}
         </div>
@@ -53,9 +73,10 @@ export default function Gallery() {
             whileTap={{ scale: 0.97 }}
             whileHover={{ y: -1 }}
             onClick={() => navigate("/galeria")}
-            className="rounded-lg bg-[#1f6fb2] px-6 py-2.5 text-white font-semibold shadow-md hover:brightness-110"
+            className="rounded-lg px-6 py-2.5 font-semibold shadow-md hover:brightness-110"
+            style={{ background: "#1f6fb2", color: "#fff" }}
           >
-            Ver más
+            {t("SEE_MORE", { defaultValue: "Ver más" })}
           </motion.button>
         </div>
       </div>
