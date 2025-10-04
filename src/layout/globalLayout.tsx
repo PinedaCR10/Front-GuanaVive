@@ -1,9 +1,7 @@
 // src/layout/GlobalLayout.tsx
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
-
 
 type GlobalLayoutProps = {
   /** Si true, muestra Header + Navbar. En false solo deja el Footer. */
@@ -18,10 +16,10 @@ export default function GlobalLayout({
 }: GlobalLayoutProps) {
   return (
     <div className="min-h-dvh flex flex-col">
+      {/* Solo mostrar el Header + Navbar si showTop es true */}
       {showTop && (
         <>
           <Header />
-          <Navbar />
         </>
       )}
 
@@ -30,6 +28,7 @@ export default function GlobalLayout({
         <Outlet />
       </div>
 
+      {/* Footer */}
       {showFooter && <Footer />}
     </div>
   );
