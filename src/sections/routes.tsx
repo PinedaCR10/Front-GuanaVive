@@ -13,11 +13,13 @@ import GalleryDetail from "./gallery/GalleryDetail";
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* LANDING: Header + Navbar + Footer */}
+      {/* LANDING: Solo Header + Navbar */}
       <Route element={<GlobalLayout showTop />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/galeria" element={<GalleryDetail />} />
+        {/* Combino lo tuyo y lo de tu compa */}
+        <Route path="/galeria" element={<Gallery />} />
+        <Route path="/galeria/:id" element={<GalleryDetail />} />
         <Route path="/categorias/:slug" element={<CategoriesDetail />} />
       </Route>
 
@@ -27,7 +29,6 @@ export default function AppRoutes() {
       </Route>
 
       {/* AUTH sin layout */}
-      {/* Prefijo /auth/* */}
       <Route path="/auth">
         <Route index element={<Navigate to="/auth/login" replace />} />
         <Route path="login" element={<LoginPage />} />

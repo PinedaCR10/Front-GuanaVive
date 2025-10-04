@@ -4,24 +4,37 @@
 @import 'swiper/css/navigation';
 @import 'swiper/css/pagination';
 
-/* src/index.css */
-/* tokens claros */
+/* Tokens base (HEAD) */
 :root{
   --bg:#ffffff; --bg-soft:#f3f4f6; --text:#111827; --text-soft:#4b5563;
   --card:#ffffff; --card-border:#e5e7eb; --brand:#1f6fb2;
   --shadow:0 2px 6px rgba(0,0,0,.06); --ring:rgba(59,130,246,.3);
   --transition:150ms linear;
+
+  /* Tokens Guanacaste (tu rama) */
+  --gv-bg: #f7f9fa;
+  --gv-surface: #ffffff;
+  --gv-text: #1f2937;
+  --gv-muted: #6b7280;
+  --gv-primary: #246083;
+  --gv-primary-600: #1b4b66;
+  --gv-primary-100: #eaf3f8;
+  --gv-accent: #c58a87;
+  --gv-accent-100: #f6ebe9;
+  --gv-border: #e5e7eb;
 }
+
 html,body,#root{height:100%;margin:0}
 html,body{background:var(--bg);color:var(--text);transition:background-color var(--transition),color var(--transition)}
 *{box-sizing:border-box;transition:background-color var(--transition),color var(--transition),border-color var(--transition)}
-/* forzar oscuro */
+
+/* DARK MODE */
 html.dark{
   color-scheme:dark;
   --bg:#0b0f19; --bg-soft:#111827; --text:#e5e7eb; --text-soft:#cbd5e1;
   --card:#0f172a; --card-border:#1f2937; --shadow:0 2px 8px rgba(0,0,0,.35); --ring:rgba(59,130,246,.35);
 }
-/* “system” */
+
 @media (prefers-color-scheme: dark){
   html[data-theme="system"]{
     color-scheme:dark;
@@ -30,10 +43,12 @@ html.dark{
   }
 }
 
-/* Forzar colores correctos en las cards (claro/oscuro) */
-.card h2 { 
-  color: var(--text) !important;
-}
-.card p { 
-  color: var(--text-soft) !important;
-}
+/* utilidades */
+.container { @apply mx-auto w-full max-w-[1100px] px-4; }
+.card      { @apply bg-white border border-[var(--gv-border)] rounded-2xl shadow-sm; }
+.btn       { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition active:scale-[.98]; }
+.btn-primary { @apply text-white bg-[var(--gv-primary)] hover:bg-[var(--gv-primary-600)]; }
+.btn-outline { @apply text-[var(--gv-primary)] border border-[var(--gv-primary)] hover:bg-[var(--gv-primary-100)]; }
+
+.card h2 { color: var(--text) !important; }
+.card p  { color: var(--text-soft) !important; }
