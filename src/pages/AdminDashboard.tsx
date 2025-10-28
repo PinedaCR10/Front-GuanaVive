@@ -4,6 +4,8 @@ import Sidebar from "../admin/sidebar";
 import Dashboard from "../admin/home/dashboard";
 import AdminUsers from "./AdminUsers";
 import AdminAdvertisement from "./AdminAdvertisement";
+import AdminCategories from "../admin/categories/AdminCategories";
+import AdminSubscriptions from "../admin/suscriptions/AdminSuscriptions";
 
 const AdminDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,6 +38,8 @@ const AdminDashboard: React.FC = () => {
             <Route index element={<Dashboard />} />      {/* /admin */}
             <Route path="users" element={<AdminUsers />} /> {/* /admin/users */}
             <Route path="posts" element={<AdminAdvertisement />} />
+            <Route path="categories" element={<AdminCategories />} /> {/* 👈 */}
+             <Route path="subscriptions" element={<AdminSubscriptions />} /> 
           </Routes>
         </main>
       </div>
