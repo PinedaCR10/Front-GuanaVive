@@ -1,20 +1,19 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import AuthLayout from "./AuthLayout";
-
-import { validateRegister } from "./validators";
-import { useAuth } from "../hooks/useAuth";
-import PasswordInput from "./passwordImput";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import AuthLayout from './AuthLayout';
+import { validateRegister } from './validators';
+import { useAuth } from '../features/auth';
+import PasswordInput from './passwordImput';
 
 export default function RegisterPage() {
-  const { register, loading } = useAuth();
+  const { register, isLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    name: "",
-    username: "",
-    email: "",
-    password: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -32,9 +31,10 @@ export default function RegisterPage() {
 
     try {
       await register(form);
-      navigate("/auth/login"); // al terminar registro, ir a login
-    } catch (err: any) {
-      setFormError(err?.message || "Error al registrar");
+      navigate(isAdmin ? '/admin' : '/');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al registrar';
+      setFormError(errorMessage);
     }
   }
 
@@ -54,27 +54,27 @@ export default function RegisterPage() {
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Nombre</label>
             <input
-              value={form.name}
-              onChange={(e) => set("name", e.target.value)}
+              value={form.firstName}
+              onChange={(e) => set('firstName', e.target.value)}
               placeholder="Tu nombre"
               className={`w-full rounded-lg border px-4 py-2 outline-none focus:border-[#1f6fb2] focus:ring-1 focus:ring-[#1f6fb2] ${
-                errors.name ? "border-red-400" : "border-gray-300"
+                errors.firstName ? 'border-red-400' : 'border-gray-300'
               }`}
             />
-            {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
+            {errors.firstName && <p className="mt-1 text-xs text-red-600">{errors.firstName}</p>}
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Usuario</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Apellido</label>
             <input
-              value={form.username}
-              onChange={(e) => set("username", e.target.value)}
-              placeholder="usuario123"
+              value={form.lastName}
+              onChange={(e) => set('lastName', e.target.value)}
+              placeholder="Tu apellido"
               className={`w-full rounded-lg border px-4 py-2 outline-none focus:border-[#1f6fb2] focus:ring-1 focus:ring-[#1f6fb2] ${
-                errors.username ? "border-red-400" : "border-gray-300"
+                errors.lastName ? 'border-red-400' : 'border-gray-300'
               }`}
             />
-            {errors.username && <p className="mt-1 text-xs text-red-600">{errors.username}</p>}
+            {errors.lastName && <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>}
           </div>
         </div>
 
@@ -104,10 +104,10 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={isLoading}
           className="mt-2 w-full rounded-lg bg-[#1f6fb2] px-4 py-2 font-semibold text-white shadow hover:bg-[#195d92] disabled:opacity-60"
         >
-          {loading ? "Creando cuenta..." : "Registrarme"}
+          {isLoading ? 'Creando cuenta...' : 'Registrarme'}
         </button>
 
         <p className="text-center text-sm text-gray-600">
