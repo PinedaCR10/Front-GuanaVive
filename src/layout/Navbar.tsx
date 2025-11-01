@@ -22,14 +22,15 @@ const publicLinks = [
 ];
 
 const userLinks = [
-  { to: "/", label: "Inicio", end: true },
+  { to: "/dashboard", label: "Dashboard", end: true },
   { to: "/user-home", label: "Explorar" },
+  { to: "/feed", label: "Feed" },
   { to: "/my-publications", label: "Mis Publicaciones" },
-  { to: "/profile", label: "Perfil" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ export default function Navbar() {
     await logout();
     navigate('/auth/login');
     setOpen(false);
+    setUserMenuOpen(false);
   };
 
   const links = isAuthenticated ? userLinks : publicLinks;
@@ -82,20 +84,77 @@ export default function Navbar() {
                 Admin
               </NavLink>
             )}
-            <div className="flex items-center gap-2 px-3 py-2">
-              <div className="h-8 w-8 rounded-full bg-[var(--gv-primary)] text-white grid place-items-center text-sm font-bold">
-                {user?.firstName?.charAt(0).toUpperCase()}
-              </div>
-              <span className="text-sm font-medium text-[var(--gv-text)]">
-                {user?.firstName}
-              </span>
+            {/* User Menu Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] transition"
+              >
+                <div className="h-8 w-8 rounded-full bg-[var(--gv-primary)] text-white grid place-items-center text-sm font-bold">
+                  {user?.firstName?.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-sm font-medium text-[var(--gv-text)]">
+                  {user?.firstName}
+                </span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {userMenuOpen && (
+                <div className="absolute right-0 mt-2 w-56 card p-2 shadow-lg z-50">
+                  <button
+                    onClick={() => {
+                      navigate('/dashboard');
+                      setUserMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                  >
+                    📊 Dashboard
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate('/profile');
+                      setUserMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                  >
+                    👤 Mi Perfil
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate('/plans');
+                      setUserMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                  >
+                    💎 Planes
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate('/my-publications');
+                      setUserMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                  >
+                    📝 Mis Publicaciones
+                  </button>
+                  <div className="border-t border-[var(--gv-border)] my-2"></div>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 text-sm"
+                  >
+                    🚪 Cerrar Sesión
+                  </button>
+                </div>
+              )}
             </div>
-            <button
-              onClick={handleLogout}
-              className="btn btn-outline"
-            >
-              Salir
-            </button>
           </div>
         )}
       </ul>

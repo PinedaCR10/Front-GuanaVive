@@ -11,6 +11,8 @@ import CreateEditPublication from '../pages/CreateEditPublication';
 import UserFeed from '../pages/UserFeed';
 import UserHome from '../accessusers/UserHome';
 import UserProfile from '../pages/UserProfile';
+import UserDashboard from '../pages/UserDashboard';
+import PlansPage from '../pages/PlansPage';
 import CategoriesDetail from '../sections/categories/CategoriesDetail';
 import Gallery from '../sections/homepage/gallery';
 import GalleryDetail from '../sections/gallery/GalleryDetail';
@@ -39,6 +41,8 @@ export const AppRoutes = () => {
       {/* Private Routes (only for authenticated users) */}
       <Route element={<PrivateRoute redirectTo="/auth/login" />}>
         <Route element={<GlobalLayout showTop />}>
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/plans" element={<PlansPage />} />
           <Route path="/feed" element={<UserFeed />} />
           <Route path="/user-home" element={<UserHome />} />
           <Route path="/profile" element={<UserProfile />} />

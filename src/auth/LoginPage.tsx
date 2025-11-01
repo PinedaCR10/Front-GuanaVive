@@ -23,7 +23,7 @@ export default function LoginPage() {
 
     try {
       await login({ email, password });
-      navigate(isAdmin ? '/admin' : '/');
+      navigate(isAdmin ? '/admin' : '/feed');
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Error al iniciar sesión';
       setFormError(errorMessage);
