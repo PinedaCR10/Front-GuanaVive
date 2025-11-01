@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { Publication, PublicationQueryParams } from '../types';
+import type { Publication, PublicationQueryParams, CreatePublicationDto, UpdatePublicationDto } from '../types';
 import { publicationsApi } from '../api';
 import type { PaginationMeta } from '../../../core/types';
 
@@ -19,6 +19,9 @@ interface PublicationsActions {
   fetchByCategory: (category: string, params?: PublicationQueryParams) => Promise<void>;
   fetchPublished: (params?: PublicationQueryParams) => Promise<void>;
   fetchPending: (params?: PublicationQueryParams) => Promise<void>;
+  createPublication: (dto: CreatePublicationDto) => Promise<void>;
+  updatePublication: (id: string, dto: UpdatePublicationDto) => Promise<void>;
+  deletePublication: (id: string) => Promise<void>;
   setCurrentPublication: (publication: Publication | null) => void;
   clearError: () => void;
 }
@@ -152,6 +155,56 @@ export const usePublicationsStore = create<PublicationsStore>()(
         } catch (error: unknown) {
           const errorMessage = error instanceof Error ? error.message : 'Error al cargar publicaciones pendientes';
           set({ isLoading: false, error: errorMessage }, false, 'fetchPending/error');
+        }
+      },
+
+      createPublication: async (dto) => {
+        try {
+          set({ isLoading: true, error: null }, false, 'createPublication/start');
+          const response = await publicationsApi.create(dto);
+          set(
+            {
+              currentPublication: response.data || null,
+              isLoading: false,
+            },
+            false,
+            'createPublication/success'
+          );
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Error al crear publicación';
+          set({ isLoading: false, error: errorMessage }, false, 'createPublication/error');
+          throw error;
+        }
+      },
+
+      updatePublication: async (id, dto) => {
+        try {
+          set({ isLoading: true, error: null }, false, 'updatePublication/start');
+          const response = await publicationsApi.update(id, dto);
+          set(
+            {
+              currentPublication: response.data || null,
+              isLoading: false,
+            },
+            false,
+            'updatePublication/success'
+          );
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Error al actualizar publicación';
+          set({ isLoading: false, error: errorMessage }, false, 'updatePublication/error');
+          throw error;
+        }
+      },
+
+      deletePublication: async (id) => {
+        try {
+          set({ isLoading: true, error: null }, false, 'deletePublication/start');
+          await publicationsApi.delete(id);
+          set({ isLoading: false }, false, 'deletePublication/success');
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Error al eliminar publicación';
+          set({ isLoading: false, error: errorMessage }, false, 'deletePublication/error');
+          throw error;
         }
       },
     }),

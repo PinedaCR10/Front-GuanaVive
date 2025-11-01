@@ -23,8 +23,8 @@ const publicLinks = [
 
 const userLinks = [
   { to: "/", label: "Inicio", end: true },
+  { to: "/feed", label: "Feed" },
   { to: "/gallery", label: "Galería" },
-  { to: "/categories", label: "Categorías" },
   { to: "/my-publications", label: "Mis Publicaciones" },
 ];
 
