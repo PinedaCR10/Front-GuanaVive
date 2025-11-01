@@ -1,5 +1,6 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../features/auth";
 
 const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
   if (to.includes('#')) {
@@ -12,7 +13,7 @@ const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => 
   }
 };
 
-const links = [
+const publicLinks = [
   { to: "/", label: "Inicio", end: true },
   { to: "/#categories", label: "Categorías" },
   { to: "/#guanacaste", label: "Guanacaste" },
@@ -20,8 +21,25 @@ const links = [
   { to: "/#gallery", label: "Galería" },
 ];
 
+const userLinks = [
+  { to: "/", label: "Inicio", end: true },
+  { to: "/gallery", label: "Galería" },
+  { to: "/categories", label: "Categorías" },
+  { to: "/my-publications", label: "Mis Publicaciones" },
+];
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/auth/login');
+    setOpen(false);
+  };
+
+  const links = isAuthenticated ? userLinks : publicLinks;
 
   const base =
     "px-3 py-2 rounded-lg text-sm font-semibold transition";
@@ -47,9 +65,39 @@ export default function Navbar() {
             </NavLink>
           </li>
         ))}
-        <a href="/login" className="btn btn-outline">
-          Ingresar
-        </a>
+        
+        {!isAuthenticated ? (
+          <a href="/auth/login" className="btn btn-outline">
+            Ingresar
+          </a>
+        ) : (
+          <div className="flex items-center gap-2">
+            {isAdmin && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `${base} ${isActive ? active : inactive}`
+                }
+              >
+                Admin
+              </NavLink>
+            )}
+            <div className="flex items-center gap-2 px-3 py-2">
+              <div className="h-8 w-8 rounded-full bg-[var(--gv-primary)] text-white grid place-items-center text-sm font-bold">
+                {user?.firstName?.charAt(0).toUpperCase()}
+              </div>
+              <span className="text-sm font-medium text-[var(--gv-text)]">
+                {user?.firstName}
+              </span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="btn btn-outline"
+            >
+              Salir
+            </button>
+          </div>
+        )}
       </ul>
 
       {/* Mobile */}
@@ -85,12 +133,44 @@ export default function Navbar() {
               {label}
             </NavLink>
           ))}
-          <a
-            href="/login"
-            className="btn btn-primary w-full justify-center mt-1"
-          >
-            Ingresar
-          </a>
+          
+          {!isAuthenticated ? (
+            <a
+              href="/auth/login"
+              className="btn btn-primary w-full justify-center mt-1"
+            >
+              Ingresar
+            </a>
+          ) : (
+            <>
+              {isAdmin && (
+                <NavLink
+                  to="/admin"
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-lg ${
+                      isActive
+                        ? active
+                        : "text-[var(--gv-text)] hover:bg-[var(--gv-primary-100)]"
+                    }`
+                  }
+                >
+                  Admin
+                </NavLink>
+              )}
+              <div className="px-3 py-2 border-t border-[var(--gv-border)] mt-2">
+                <div className="text-sm font-medium text-[var(--gv-text)] mb-2">
+                  {user?.firstName} {user?.lastName}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-outline w-full justify-center"
+                >
+                  Salir
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
     </nav>

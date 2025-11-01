@@ -82,6 +82,13 @@ export default function LoginPage() {
           {isLoading ? 'Accediendo...' : 'Acceder al Sistema'}
         </button>
 
+        <Link
+          to="/"
+          className="block w-full text-center rounded-lg border border-[#1f6fb2] px-4 py-2 font-semibold text-[#1f6fb2] hover:bg-[#1f6fb2] hover:text-white transition"
+        >
+          Volver al inicio
+        </Link>
+
         <p className="text-center text-sm text-gray-600">
           ¿No tienes cuenta?{" "}
           <Link className="font-semibold text-[#1f6fb2] hover:underline" to="/auth/register">

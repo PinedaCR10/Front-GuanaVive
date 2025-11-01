@@ -101,16 +101,6 @@ export const useAuthStore = create<AuthStore>()(
 
             await authApi.register(dto);
 
-            const loginResponse = await authApi.login({
-              email: dto.email,
-              password: dto.password,
-            });
-
-            const { access_token, refresh_token, user } = loginResponse;
-
-            get().setTokens(access_token, refresh_token);
-            get().setUser(user);
-
             set({ isLoading: false }, false, 'register/success');
           } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : 'Error al registrar usuario';
