@@ -37,8 +37,8 @@ export interface RegisterDto {
 }
 
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
   user: User;
 }
 
@@ -53,8 +53,8 @@ export interface RefreshTokenDto {
 }
 
 export interface RefreshTokenResponse {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 export interface MeResponse {

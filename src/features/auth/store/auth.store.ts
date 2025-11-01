@@ -82,9 +82,9 @@ export const useAuthStore = create<AuthStore>()(
 
             const response = await authApi.login(dto);
 
-            const { accessToken, refreshToken, user } = response;
+            const { access_token, refresh_token, user } = response;
 
-            get().setTokens(accessToken, refreshToken);
+            get().setTokens(access_token, refresh_token);
             get().setUser(user);
 
             set({ isLoading: false }, false, 'login/success');
@@ -106,9 +106,9 @@ export const useAuthStore = create<AuthStore>()(
               password: dto.password,
             });
 
-            const { accessToken, refreshToken, user } = loginResponse;
+            const { access_token, refresh_token, user } = loginResponse;
 
-            get().setTokens(accessToken, refreshToken);
+            get().setTokens(access_token, refresh_token);
             get().setUser(user);
 
             set({ isLoading: false }, false, 'register/success');
@@ -146,7 +146,7 @@ export const useAuthStore = create<AuthStore>()(
               refreshToken: currentRefreshToken,
             });
 
-            get().setTokens(response.accessToken, response.refreshToken);
+            get().setTokens(response.access_token, response.refresh_token);
           } catch (error: unknown) {
             get().clearAuth();
             throw error;
