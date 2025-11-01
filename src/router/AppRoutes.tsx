@@ -9,6 +9,8 @@ import NotFoundPage from '../pages/NotFoundPage';
 import MyPublicationsPage from '../pages/MyPublications';
 import CreateEditPublication from '../pages/CreateEditPublication';
 import UserFeed from '../pages/UserFeed';
+import UserHome from '../accessusers/UserHome';
+import UserProfile from '../pages/UserProfile';
 import CategoriesDetail from '../sections/categories/CategoriesDetail';
 import Gallery from '../sections/homepage/gallery';
 import GalleryDetail from '../sections/gallery/GalleryDetail';
@@ -38,6 +40,8 @@ export const AppRoutes = () => {
       <Route element={<PrivateRoute redirectTo="/auth/login" />}>
         <Route element={<GlobalLayout showTop />}>
           <Route path="/feed" element={<UserFeed />} />
+          <Route path="/user-home" element={<UserHome />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/my-publications" element={<MyPublicationsPage />} />
           <Route path="/my-publications/create" element={<CreateEditPublication />} />
           <Route path="/my-publications/edit/:id" element={<CreateEditPublication />} />

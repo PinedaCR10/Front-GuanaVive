@@ -1,7 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { useSubscriptions } from "../../features/subscriptions";
+import { PLANS, type PlanType } from "../../features/subscriptions";
+import { useAuth } from "../../features/auth";
 
 // ✅ Props tipadas para que funcione correctamente con UserHeader
 export interface UserSidebarProps {
@@ -11,15 +14,36 @@ export interface UserSidebarProps {
 
 export default function UserSidebar({ open, onClose }: UserSidebarProps) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  const { subscription, fetchMySubscription, createSubscription } = useSubscriptions();
   const [step, setStep] = useState<"menu" | "plans" | "form" | "edit">("menu");
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<PlanType | null>(null);
 
-  // 🔹 Simula si el usuario está suscrito o no
-  const isSubscribed = !!selectedPlan;
+  // Cargar suscripción del usuario
+  useEffect(() => {
+    if (open) {
+      fetchMySubscription();
+    }
+  }, [open, fetchMySubscription]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/");
+  // 🔹 Verificar si el usuario tiene suscripción activa
+  const isSubscribed = subscription && subscription.status === 'active';
+
+  const handleSelectPlan = async () => {
+    if (selectedPlan) {
+      try {
+        await createSubscription({ plan: selectedPlan });
+        setStep("form");
+      } catch (error) {
+        console.error('Error al crear suscripción:', error);
+      }
+    }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/auth/login");
+    onClose();
   };
 
   return (
@@ -61,14 +85,28 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
                   onClick={() => setStep(isSubscribed ? "form" : "plans")}
                   className="w-full text-left px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
                 >
-                  Agregar
+                  {isSubscribed ? 'Agregar Publicación' : 'Obtener Plan'}
+                </button>
+
+                {subscription && (
+                  <div className="p-3 bg-blue-50 rounded-md text-sm">
+                    <p className="font-semibold text-blue-900">Plan Actual: {subscription.plan}</p>
+                    <p className="text-blue-700 text-xs mt-1">Estado: {subscription.status === 'active' ? 'Activo' : 'Inactivo'}</p>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => navigate('/profile')}
+                  className="w-full text-left px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200"
+                >
+                  Ver perfil
                 </button>
 
                 <button
-                  onClick={() => setStep("edit")}
+                  onClick={() => navigate('/my-publications')}
                   className="w-full text-left px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200"
                 >
-                  Editar perfil
+                  Mis publicaciones
                 </button>
 
                 <button
@@ -87,50 +125,33 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
                   Elige un plan para publicar en GuanaVive.
                 </p>
                 <div className="grid gap-3">
-                  <div
-                    className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 ${
-                      selectedPlan === "Básico" ? "border-blue-500" : ""
-                    }`}
-                    onClick={() => setSelectedPlan("Básico")}
-                  >
-                    <h3 className="font-semibold">Plan Básico</h3>
-                    <p className="text-sm text-gray-600">
-                      Publica un solo evento o perfil.
-                    </p>
-                    <p className="text-sm font-medium mt-1">₡0 / mes</p>
-                  </div>
-
-                  <div
-                    className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 ${
-                      selectedPlan === "Premium" ? "border-blue-500" : ""
-                    }`}
-                    onClick={() => setSelectedPlan("Premium")}
-                  >
-                    <h3 className="font-semibold">Plan Premium</h3>
-                    <p className="text-sm text-gray-600">
-                      Publica hasta 5 eventos o perfiles. Mayor visibilidad.
-                    </p>
-                    <p className="text-sm font-medium mt-1">₡3.000 / mes</p>
-                  </div>
-
-                  <div
-                    className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 ${
-                      selectedPlan === "Plus" ? "border-blue-500" : ""
-                    }`}
-                    onClick={() => setSelectedPlan("Plus")}
-                  >
-                    <h3 className="font-semibold">Plan Plus</h3>
-                    <p className="text-sm text-gray-600">
-                      Publicaciones ilimitadas, soporte prioritario y
-                      estadísticas.
-                    </p>
-                    <p className="text-sm font-medium mt-1">₡6.000 / mes</p>
-                  </div>
+                  {Object.values(PLANS).map((plan) => (
+                    <div
+                      key={plan.name}
+                      className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 ${
+                        selectedPlan === plan.name ? "border-blue-500 bg-blue-50" : ""
+                      }`}
+                      onClick={() => setSelectedPlan(plan.name)}
+                    >
+                      <h3 className="font-semibold">{plan.name}</h3>
+                      <p className="text-sm text-gray-600">{plan.description}</p>
+                      <p className="text-sm font-medium mt-1">
+                        ₡{plan.price.toLocaleString()} / mes
+                      </p>
+                      <ul className="mt-2 space-y-1">
+                        {plan.features.map((feature, idx) => (
+                          <li key={idx} className="text-xs text-gray-600">
+                            ✓ {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
 
                 {selectedPlan && (
                   <button
-                    onClick={() => setStep("form")}
+                    onClick={handleSelectPlan}
                     className="w-full mt-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                   >
                     Continuar con {selectedPlan}
@@ -141,138 +162,50 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
 
             {/* 🔹 Formulario para agregar publicación */}
             {step === "form" && (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert("Publicación enviada con éxito ✅");
-                  setStep("menu");
-                }}
-                className="space-y-3"
-              >
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tipo de publicación
-                  </label>
-                  <select className="w-full border rounded-md px-3 py-2 text-sm">
-                    <option>Evento</option>
-                    <option>Perfil</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nombre
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full border rounded-md px-3 py-2 text-sm"
-                    placeholder="Nombre del evento o perfil"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Descripción
-                  </label>
-                  <textarea
-                    required
-                    className="w-full border rounded-md px-3 py-2 text-sm"
-                    rows={3}
-                    placeholder="Descripción breve..."
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Imagen
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="w-full border rounded-md px-3 py-2 text-sm"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-2 mt-4">
-                  <button
-                    type="button"
-                    onClick={() => setStep("menu")}
-                    className="px-3 py-2 border rounded-md text-sm hover:bg-gray-100"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
-                  >
-                    Publicar
-                  </button>
-                </div>
-              </form>
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600">
+                  Crea una nueva publicación desde el panel de publicaciones
+                </p>
+                <button
+                  onClick={() => {
+                    navigate('/my-publications/create');
+                    onClose();
+                  }}
+                  className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Ir a crear publicación
+                </button>
+                <button
+                  onClick={() => setStep("menu")}
+                  className="w-full py-2 border rounded-md hover:bg-gray-100"
+                >
+                  Volver al menú
+                </button>
+              </div>
             )}
 
             {/* 🔹 Sección editar perfil */}
             {step === "edit" && (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert("Perfil actualizado ✅");
-                  setStep("menu");
-                }}
-                className="space-y-3"
-              >
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nombre de usuario
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full border rounded-md px-3 py-2 text-sm"
-                    placeholder="Tu nombre"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Correo electrónico
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    className="w-full border rounded-md px-3 py-2 text-sm"
-                    placeholder="ejemplo@correo.com"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contraseña
-                  </label>
-                  <input
-                    type="password"
-                    className="w-full border rounded-md px-3 py-2 text-sm"
-                    placeholder="••••••••"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-2 mt-4">
-                  <button
-                    type="button"
-                    onClick={() => setStep("menu")}
-                    className="px-3 py-2 border rounded-md text-sm hover:bg-gray-100"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
-                  >
-                    Guardar
-                  </button>
-                </div>
-              </form>
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600">
+                  Edita tu perfil desde la página de perfil
+                </p>
+                <button
+                  onClick={() => {
+                    navigate('/profile');
+                    onClose();
+                  }}
+                  className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Ir a mi perfil
+                </button>
+                <button
+                  onClick={() => setStep("menu")}
+                  className="w-full py-2 border rounded-md hover:bg-gray-100"
+                >
+                  Volver al menú
+                </button>
+              </div>
             )}
           </div>
         </motion.div>

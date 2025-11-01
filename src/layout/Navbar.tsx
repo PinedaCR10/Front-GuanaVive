@@ -23,9 +23,9 @@ const publicLinks = [
 
 const userLinks = [
   { to: "/", label: "Inicio", end: true },
-  { to: "/feed", label: "Feed" },
-  { to: "/gallery", label: "Galería" },
+  { to: "/user-home", label: "Explorar" },
   { to: "/my-publications", label: "Mis Publicaciones" },
+  { to: "/profile", label: "Perfil" },
 ];
 
 export default function Navbar() {

@@ -1,44 +1,40 @@
 // src/accessusers/UserHome.tsx
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CANTONES, CATEGORIES, FEED_DATA } from "./components/userFeedData";
+import { CANTONES, CATEGORIES } from "./components/userFeedData";
 import UserHeader from "./components/userHeader";
-
-
-interface FeedItem {
-  id: string;
-  name: string;
-  canton: string;
-  category: string;
-  description: string;
-  image: string;
-  references: { label: string; url: string }[];
-}
+import { usePublications } from "../features/publications";
+import type { Publication } from "../features/publications";
 
 export default function UserHome() {
+  const { publications, isLoading, fetchPublished } = usePublications();
   const [search, setSearch] = useState("");
   const [canton, setCanton] = useState("Todos");
   const [category, setCategory] = useState("Todos");
   const [order, setOrder] = useState<"az" | "za">("az");
-  const [selected, setSelected] = useState<FeedItem | null>(null);
+  const [selected, setSelected] = useState<Publication | null>(null);
   const [page, setPage] = useState(1);
   const itemsPerPage = 9;
 
-  // 🔹 Filtrado con memoización
+  // Cargar publicaciones del backend
+  useEffect(() => {
+    fetchPublished({ status: 'publicado', limit: 100 });
+  }, [fetchPublished]);
+
+  // 🔹 Filtrado con memoización - ahora usando publicaciones reales
   const filtered = useMemo(() => {
-    let arr: FeedItem[] = FEED_DATA.filter(
-      (i) =>
+    const arr: Publication[] = publications.filter(
+      (pub) =>
         (!search ||
-          i.name.toLowerCase().includes(search.toLowerCase()) ||
-          i.description.toLowerCase().includes(search.toLowerCase())) &&
-        (canton === "Todos" || i.canton === canton) &&
-        (category === "Todos" || i.category === category)
+          pub.title.toLowerCase().includes(search.toLowerCase()) ||
+          pub.content.toLowerCase().includes(search.toLowerCase())) &&
+        (category === "Todos" || pub.categoryId === category.toLowerCase())
     );
     arr.sort((a, b) =>
-      order === "az" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+      order === "az" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
     );
     return arr;
-  }, [search, canton, category, order]);
+  }, [publications, search, category, order]);
 
   // 🔹 Paginación
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
@@ -98,7 +94,12 @@ export default function UserHome() {
         </div>
 
         {/* 🔹 GRID DE CARDS */}
-        {paginated.length === 0 ? (
+        {isLoading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+            <p className="mt-4 text-gray-600">Cargando publicaciones...</p>
+          </div>
+        ) : paginated.length === 0 ? (
           <p className="text-gray-600">No hay resultados.</p>
         ) : (
           <motion.ul
@@ -107,25 +108,32 @@ export default function UserHome() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            {paginated.map((item: FeedItem) => (
+            {paginated.map((pub: Publication) => (
               <motion.li
-                key={item.id}
+                key={pub.id}
                 className="flex flex-col border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition cursor-pointer"
                 whileHover={{ y: -3 }}
-                onClick={() => setSelected(item)}
+                onClick={() => setSelected(pub)}
               >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="h-40 w-full object-cover"
-                />
+                {pub.imageUrl && (
+                  <img
+                    src={pub.imageUrl}
+                    alt={pub.title}
+                    className="h-40 w-full object-cover"
+                  />
+                )}
+                {!pub.imageUrl && (
+                  <div className="h-40 w-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                    <span className="text-4xl text-blue-600">📄</span>
+                  </div>
+                )}
                 <div className="p-4">
-                  <h3 className="font-semibold text-lg truncate">{item.name}</h3>
+                  <h3 className="font-semibold text-lg truncate">{pub.title}</h3>
                   <p className="text-sm text-gray-500">
-                    {item.category} • {item.canton}
+                    {pub.categoryId}
                   </p>
                   <p className="mt-2 text-sm line-clamp-3 text-gray-700">
-                    {item.description}
+                    {pub.content}
                   </p>
                 </div>
               </motion.li>
@@ -192,34 +200,29 @@ export default function UserHome() {
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={selected.image}
-                alt={selected.name}
-                className="w-full h-64 object-cover"
-              />
-              <div className="p-6">
-                <h2 className="text-xl font-semibold">{selected.name}</h2>
-                <p className="text-gray-600 text-sm mt-1">
-                  <b>Categoría:</b> {selected.category} • <b>Cantón:</b>{" "}
-                  {selected.canton}
-                </p>
-                <p className="mt-4">{selected.description}</p>
-                <div className="mt-4">
-                  <p className="text-sm font-semibold">Referencias</p>
-                  <div className="mt-2 flex gap-3 flex-wrap">
-                    {selected.references.map((r, i) => (
-                      <a
-                        key={i}
-                        href={r.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-blue-600 hover:underline text-sm"
-                      >
-                        {r.label}
-                      </a>
-                    ))}
-                  </div>
+              {selected.imageUrl && (
+                <img
+                  src={selected.imageUrl}
+                  alt={selected.title}
+                  className="w-full h-64 object-cover"
+                />
+              )}
+              {!selected.imageUrl && (
+                <div className="w-full h-64 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                  <span className="text-6xl text-blue-600">📄</span>
                 </div>
+              )}
+              <div className="p-6">
+                <h2 className="text-xl font-semibold">{selected.title}</h2>
+                <p className="text-gray-600 text-sm mt-1">
+                  <b>Categoría:</b> {selected.categoryId}
+                </p>
+                {selected.author && (
+                  <p className="text-gray-500 text-sm">
+                    <b>Autor:</b> {selected.author.firstName} {selected.author.lastName}
+                  </p>
+                )}
+                <p className="mt-4 whitespace-pre-wrap">{selected.content}</p>
                 <div className="mt-6 flex justify-end">
                   <button
                     onClick={() => setSelected(null)}
