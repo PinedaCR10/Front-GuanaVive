@@ -13,19 +13,15 @@ import type {
 
 export const authApi = {
   async login(dto: LoginDto): Promise<LoginResponse> {
+    // El backend devuelve directamente { access_token, refresh_token, user }
     const response = await apiClient.post<LoginResponse>(API_ROUTES.AUTH.LOGIN, dto);
-    if (!response.data) {
-      throw new Error('Invalid response from server');
-    }
-    return response.data;
+    return response as unknown as LoginResponse;
   },
 
   async register(dto: RegisterDto): Promise<RegisterResponse> {
+    // El backend devuelve { success, message, user }
     const response = await apiClient.post<RegisterResponse>(API_ROUTES.AUTH.REGISTER, dto);
-    if (!response.data) {
-      throw new Error('Invalid response from server');
-    }
-    return response.data;
+    return response as unknown as RegisterResponse;
   },
 
   async logout(): Promise<ApiResponse> {
@@ -33,18 +29,14 @@ export const authApi = {
   },
 
   async refreshToken(dto: RefreshTokenDto): Promise<RefreshTokenResponse> {
+    // El backend devuelve directamente { access_token, refresh_token }
     const response = await apiClient.post<RefreshTokenResponse>(API_ROUTES.AUTH.REFRESH, dto);
-    if (!response.data) {
-      throw new Error('Invalid response from server');
-    }
-    return response.data;
+    return response as unknown as RefreshTokenResponse;
   },
 
   async me(): Promise<MeResponse> {
+    // El backend devuelve { success, user }
     const response = await apiClient.get<MeResponse>(API_ROUTES.AUTH.ME);
-    if (!response.data) {
-      throw new Error('Invalid response from server');
-    }
-    return response.data;
+    return response as unknown as MeResponse;
   },
 };

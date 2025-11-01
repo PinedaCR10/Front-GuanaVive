@@ -6,7 +6,7 @@ import { useAuth } from '../features/auth';
 import PasswordInput from './passwordImput';
 
 export default function RegisterPage() {
-  const { register, isLoading, isAdmin } = useAuth();
+  const { register, isLoading } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -17,6 +17,7 @@ export default function RegisterPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   function set<K extends keyof typeof form>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -27,11 +28,17 @@ export default function RegisterPage() {
     const v = validateRegister(form);
     setErrors(v);
     setFormError(null);
+    setSuccessMessage(null);
     if (Object.keys(v).length) return;
 
     try {
       await register(form);
-      navigate(isAdmin ? '/admin' : '/');
+      setSuccessMessage('¡Registro exitoso! Redirigiendo al login...');
+      
+      // Redirigir al login después de 2 segundos
+      setTimeout(() => {
+        navigate('/auth/login');
+      }, 2000);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Error al registrar';
       setFormError(errorMessage);
@@ -47,6 +54,12 @@ export default function RegisterPage() {
         {formError && (
           <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
             {formError}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+            {successMessage}
           </div>
         )}
 
@@ -97,9 +110,14 @@ export default function RegisterPage() {
           <PasswordInput
             value={form.password}
             onChange={(e) => set("password", e.target.value)}
-            placeholder="Mínimo 6 caracteres"
+            placeholder="Ej: Password123"
           />
           {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
+          {!errors.password && (
+            <p className="mt-1 text-xs text-gray-500">
+              Debe contener mayúscula, minúscula y número (6-20 caracteres)
+            </p>
+          )}
         </div>
 
         <button
@@ -109,6 +127,13 @@ export default function RegisterPage() {
         >
           {isLoading ? 'Creando cuenta...' : 'Registrarme'}
         </button>
+
+        <Link
+          to="/"
+          className="block w-full text-center rounded-lg border border-[#1f6fb2] px-4 py-2 font-semibold text-[#1f6fb2] hover:bg-[#1f6fb2] hover:text-white transition"
+        >
+          Volver al inicio
+        </Link>
 
         <p className="text-center text-sm text-gray-600">
           ¿Ya tienes cuenta?{" "}

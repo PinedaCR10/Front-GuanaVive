@@ -1,11 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { PublicRoute, AdminRoute } from '../shared/guards';
+import { PublicRoute, AdminRoute, PrivateRoute } from '../shared/guards';
 import GlobalLayout from '../layout/globalLayout';
 import HomePage from '../pages/Homepage';
 import LoginPage from '../auth/LoginPage';
 import RegisterPage from '../auth/Register';
 import AdminDashboard from '../pages/AdminDashboard';
 import NotFoundPage from '../pages/NotFoundPage';
+import MyPublicationsPage from '../pages/MyPublications';
 import CategoriesDetail from '../sections/categories/CategoriesDetail';
 import Gallery from '../sections/homepage/gallery';
 import GalleryDetail from '../sections/gallery/GalleryDetail';
@@ -28,6 +29,13 @@ export const AppRoutes = () => {
           <Route index element={<Navigate to="/auth/login" replace />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+        </Route>
+      </Route>
+
+      {/* Private Routes (only for authenticated users) */}
+      <Route element={<PrivateRoute redirectTo="/auth/login" />}>
+        <Route element={<GlobalLayout showTop />}>
+          <Route path="/my-publications" element={<MyPublicationsPage />} />
         </Route>
       </Route>
 

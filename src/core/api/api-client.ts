@@ -61,21 +61,21 @@ class ApiClient {
               throw new Error('No refresh token available');
             }
 
-            const response = await axios.post<ApiResponse<{ accessToken: string; refreshToken: string }>>(
+            const response = await axios.post<ApiResponse<{ access_token: string; refresh_token: string }>>(
               `${ENV.API_BASE_URL}/auth/refresh`,
               { refreshToken }
             );
 
-            const { accessToken, refreshToken: newRefreshToken } = response.data.data!;
+            const { access_token, refresh_token: newRefreshToken } = response.data.data!;
             
-            this.setAccessToken(accessToken);
+            this.setAccessToken(access_token);
             this.setRefreshToken(newRefreshToken);
 
-            this.onRefreshed(accessToken);
+            this.onRefreshed(access_token);
             this.refreshSubscribers = [];
 
             if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+              originalRequest.headers.Authorization = `Bearer ${access_token}`;
             }
 
             return this.axiosInstance(originalRequest);
