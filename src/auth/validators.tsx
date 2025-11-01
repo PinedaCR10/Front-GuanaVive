@@ -8,14 +8,14 @@ export function validateLogin(email: string, password: string) {
 }
 
 export function validateRegister(data: {
-  name: string;
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }) {
   const errors: Record<string, string> = {};
-  if (data.name.trim().length < 2) errors.name = "Nombre muy corto";
-  if (data.username.trim().length < 3) errors.username = "Usuario muy corto";
+  if (data.firstName.trim().length < 2) errors.firstName = "Nombre muy corto";
+  if (data.lastName.trim().length < 2) errors.lastName = "Apellido muy corto";
   if (!isEmail(data.email)) errors.email = "Correo inválido";
   if (data.password.length < 6) errors.password = "Mínimo 6 caracteres";
   return errors;

@@ -1,17 +1,16 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import AuthLayout from "./AuthLayout";
-
-import { validateLogin } from "./validators";
-import { useAuth } from "../hooks/useAuth";
-import PasswordInput from "./passwordImput";
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import AuthLayout from './AuthLayout';
+import { validateLogin } from './validators';
+import { useAuth } from '../features/auth';
+import PasswordInput from './passwordImput';
 
 export default function LoginPage() {
-  const { login, loading } = useAuth();
+  const { login, isLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -24,9 +23,10 @@ export default function LoginPage() {
 
     try {
       await login({ email, password });
-      navigate("/admin");
-    } catch (err: any) {
-      setFormError(err?.message || "Error al iniciar sesión");
+      navigate(isAdmin ? '/admin' : '/');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al iniciar sesión';
+      setFormError(errorMessage);
     }
   }
 
@@ -76,10 +76,10 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={isLoading}
           className="mt-2 w-full rounded-lg bg-[#1f6fb2] px-4 py-2 font-semibold text-white shadow hover:bg-[#195d92] disabled:opacity-60"
         >
-          {loading ? "Accediendo..." : "Acceder al Sistema"}
+          {isLoading ? 'Accediendo...' : 'Acceder al Sistema'}
         </button>
 
         <p className="text-center text-sm text-gray-600">
