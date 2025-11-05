@@ -31,14 +31,14 @@ export default function Header() {
         {/* Icono de login / Usuario - Absoluto a la derecha - Solo desktop */}
         <div className="absolute right-4 md:right-0 top-0 h-full items-center -mr-0 md:-mr-8 hidden lg:flex">
           {!isAuthenticated ? (
-            <a href="/auth/login" className="flex items-center hover:opacity-80 transition-opacity">
+            <NavLink to="/auth/login" className="flex items-center hover:opacity-80 transition-opacity">
               <img 
                 src="/images/homepage/acceso.png" 
                 alt="Login" 
                 className="w-7 h-7 md:w-8 md:h-8"
                 style={{ filter: 'brightness(0) saturate(100%) invert(27%) sepia(35%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(90%)' }}
               />
-            </a>
+            </NavLink>
           ) : (
             <div className="flex items-center gap-1 md:gap-2">
               {isAdmin && (
