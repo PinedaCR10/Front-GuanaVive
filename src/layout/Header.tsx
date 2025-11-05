@@ -28,8 +28,8 @@ export default function Header() {
           <Navbar />
         </div>
 
-        {/* Icono de login / Usuario - Absoluto a la derecha */}
-        <div className="absolute right-4 md:right-0 top-0 h-full flex items-center -mr-0 md:-mr-8">
+        {/* Icono de login / Usuario - Absoluto a la derecha - Solo desktop */}
+        <div className="absolute right-4 md:right-0 top-0 h-full items-center -mr-0 md:-mr-8 hidden lg:flex">
           {!isAuthenticated ? (
             <a href="/auth/login" className="flex items-center hover:opacity-80 transition-opacity">
               <img 
@@ -44,7 +44,7 @@ export default function Header() {
               {isAdmin && (
                 <NavLink
                   to="/admin"
-                  className={`${base} ${active} hidden lg:block`}
+                  className={`${base} ${active}`}
                 >
                   Admin
                 </NavLink>

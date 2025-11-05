@@ -1,0 +1,32 @@
+{
+  "TITLES": {
+    "bailes": "Bailes Folklóricos",
+    "musica": "Músicos Folklóricos",
+    "retahileros": "Retahileros",
+    "eventos": "Eventos",
+    "artesanos": "Artesanos",
+    "haciendas": "Haciendas"
+  },
+  "SEARCH_PLACEHOLDER": "Buscar por nombre...",
+  "TODOS": "Todos",
+  "ORDER_AZ": "Nombre A–Z",
+  "ORDER_ZA": "Nombre Z–A",
+  "REGRESAR": "Regresar",
+  "NO_RESULTS": "No hay resultados.",
+  "CATEGORIA": "Categoría:",
+  "CANTON": "Cantón:",
+  "REFERENCIAS": "Referencias",
+  "CERRAR": "Cerrar",
+  "NAME_BASE": {
+    "bailes": "Grupo de Baile",
+    "musica": "Artista",
+    "retahileros": "Retahilero",
+    "eventos": "Evento",
+    "artesanos": "Artesano",
+    "haciendas": "Hacienda"
+  },
+  "DESCRIPTION": "Descripción breve del elemento con enfoque cultural guanacasteco. Información mock para la fase inicial de UI.",
+  "REFERENCE_1": "Referencia 1",
+  "REFERENCE_2": "Referencia 2"
+}
+

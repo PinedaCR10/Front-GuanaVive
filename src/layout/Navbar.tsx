@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useAuth } from "../features/auth";
+import { useTranslation } from "react-i18next";
 
 const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
   if (to.includes('#')) {
@@ -13,25 +14,26 @@ const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => 
   }
 };
 
-const publicLinks = [
-  { to: "/", label: "Inicio", end: true },
-  { to: "/#categories", label: "Categorías" },
-  { to: "/#guanacaste", label: "Guanacaste" },
-  { to: "/#conocemas", label: "Conoce más" },
-  { to: "/#gallery", label: "Galería" },
-];
-
-const userLinks = [
-  { to: "/", label: "Inicio", end: true },
-  { to: "/feed", label: "Feed" },
-  { to: "/gallery", label: "Galería" },
-  { to: "/my-publications", label: "Mis Publicaciones" },
-];
-
 export default function Navbar() {
+  const { t } = useTranslation("navbar");
   const [open, setOpen] = useState(false);
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const navigate = useNavigate();
+
+  const publicLinks = useMemo(() => [
+    { to: "/", labelKey: "INICIO", end: true },
+    { to: "/#categories", labelKey: "CATEGORIAS" },
+    { to: "/#guanacaste", labelKey: "GUANACASTE" },
+    { to: "/#conocemas", labelKey: "CONOCE_MAS" },
+    { to: "/#gallery", labelKey: "GALERIA" },
+  ], []);
+
+  const userLinks = useMemo(() => [
+    { to: "/", labelKey: "INICIO", end: true },
+    { to: "/feed", labelKey: "FEED" },
+    { to: "/gallery", labelKey: "GALERIA" },
+    { to: "/my-publications", labelKey: "MIS_PUBLICACIONES" },
+  ], []);
 
   const handleLogout = async () => {
     await logout();
@@ -39,7 +41,13 @@ export default function Navbar() {
     setOpen(false);
   };
 
-  const links = isAuthenticated ? userLinks : publicLinks;
+  const translatedLinks = useMemo(() => {
+    const links = isAuthenticated ? userLinks : publicLinks;
+    return links.map(link => ({
+      ...link,
+      label: t(link.labelKey, { defaultValue: link.labelKey })
+    }));
+  }, [isAuthenticated, userLinks, publicLinks, t]);
 
   const base =
     "px-3 py-2 text-sm font-semibold transition";
@@ -51,7 +59,7 @@ export default function Navbar() {
     <nav className="relative">
       {/* Desktop */}
       <ul className="hidden lg:flex items-center gap-2 xl:gap-4">
-        {links.map(({ to, label, end }) => (
+        {translatedLinks.map(({ to, label, end }) => (
           <li key={to}>
             <NavLink
               to={to}
@@ -67,29 +75,11 @@ export default function Navbar() {
         ))}
       </ul>
 
-      {/* Tablet - Mostrar menos enlaces */}
-      <ul className="hidden md:flex lg:hidden items-center gap-2">
-        {links.slice(0, 3).map(({ to, label, end }) => (
-          <li key={to}>
-            <NavLink
-              to={to}
-              end={end}
-              onClick={(e) => scrollToSection(e, to)}
-              className={({ isActive }) =>
-                `${base} ${isActive ? active : inactive} text-xs px-2`
-              }
-            >
-              {label}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-
-      {/* Mobile */}
+      {/* Mobile - Solo botón de menú */}
       <button
-        aria-label="Menú"
+        aria-label={t("MENU", { defaultValue: "Menú" })}
         onClick={() => setOpen((v) => !v)}
-        className="md:hidden h-10 w-10 grid place-items-center rounded-lg border border-[var(--gv-border)]"
+        className="lg:hidden h-10 w-10 grid place-items-center rounded-lg border border-[var(--gv-border)]"
       >
         <div className="w-4 h-[2px] bg-[var(--gv-text)] relative">
           <span className="absolute inset-x-0 -top-1.5 h-[2px] bg-[var(--gv-text)]" />
@@ -100,22 +90,22 @@ export default function Navbar() {
       {open && (
         <>
           <div 
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-56 card p-3 md:hidden z-50 shadow-xl">
+          <div className="absolute right-0 mt-2 w-56 card p-3 lg:hidden z-50 shadow-xl">
             <div className="flex items-center justify-between mb-3 pb-3 border-b border-[var(--gv-border)]">
-              <h3 className="text-base font-bold text-[var(--gv-text)]">Menú</h3>
+              <h3 className="text-base font-bold text-[var(--gv-text)]">{t("MENU", { defaultValue: "Menú" })}</h3>
               <button
                 onClick={() => setOpen(false)}
                 className="p-1 rounded-lg hover:bg-[var(--gv-primary-100)] transition-colors text-[var(--gv-text)]"
-                aria-label="Cerrar menú"
+                aria-label={t("CERRAR_MENU", { defaultValue: "Cerrar menú" })}
               >
                 ×
               </button>
             </div>
             <nav className="space-y-1">
-              {links.map(({ to, label, end }) => (
+              {translatedLinks.map(({ to, label, end }) => (
                 <NavLink
                   key={to}
                   to={to}
@@ -139,17 +129,19 @@ export default function Navbar() {
           
             <div className="mt-3 pt-3 border-t border-[var(--gv-border)]">
               {!isAuthenticated ? (
-                <a
-                  href="/auth/login"
-                  className="flex items-center justify-center hover:opacity-80 transition-opacity"
+                <NavLink
+                  to="/auth/login"
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-4 py-2.5 rounded-lg transition-colors ${
+                      isActive
+                        ? active + " bg-[var(--gv-primary-100)]"
+                        : "text-[var(--gv-text)] hover:bg-[var(--gv-primary-100)] hover:text-[var(--gv-primary)]"
+                    }`
+                  }
                 >
-                  <img 
-                    src="/images/homepage/acceso.png" 
-                    alt="Login" 
-                    className="w-8 h-8"
-                    style={{ filter: 'brightness(0) saturate(100%) invert(27%) sepia(35%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(90%)' }}
-                  />
-                </a>
+                  {t("INGRESAR", { defaultValue: "Ingresar" })}
+                </NavLink>
               ) : (
                 <>
                   {isAdmin && (
@@ -164,7 +156,7 @@ export default function Navbar() {
                         }`
                       }
                     >
-                      Admin
+                      {t("ADMIN", { defaultValue: "Admin" })}
                     </NavLink>
                   )}
                   <div className="px-4 py-2 rounded-lg bg-[var(--gv-primary-100)] mb-3">
@@ -179,7 +171,7 @@ export default function Navbar() {
                     onClick={handleLogout}
                     className="btn btn-outline w-full justify-center"
                   >
-                    Salir
+                    {t("SALIR", { defaultValue: "Salir" })}
                   </button>
                 </>
               )}
