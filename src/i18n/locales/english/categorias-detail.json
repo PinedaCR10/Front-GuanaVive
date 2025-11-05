@@ -1,0 +1,32 @@
+{
+  "TITLES": {
+    "bailes": "Folk Dances",
+    "musica": "Folk Musicians",
+    "retahileros": "Rhymers",
+    "eventos": "Events",
+    "artesanos": "Artisans",
+    "haciendas": "Haciendas"
+  },
+  "SEARCH_PLACEHOLDER": "Search by name...",
+  "TODOS": "All",
+  "ORDER_AZ": "Name A–Z",
+  "ORDER_ZA": "Name Z–A",
+  "REGRESAR": "Back",
+  "NO_RESULTS": "No results found.",
+  "CATEGORIA": "Category:",
+  "CANTON": "Canton:",
+  "REFERENCIAS": "References",
+  "CERRAR": "Close",
+  "NAME_BASE": {
+    "bailes": "Dance Group",
+    "musica": "Artist",
+    "retahileros": "Rhymer",
+    "eventos": "Event",
+    "artesanos": "Artisan",
+    "haciendas": "Hacienda"
+  },
+  "DESCRIPTION": "Brief description of the element with a focus on Guanacaste culture. Mock information for the initial UI phase.",
+  "REFERENCE_1": "Reference 1",
+  "REFERENCE_2": "Reference 2"
+}
+
