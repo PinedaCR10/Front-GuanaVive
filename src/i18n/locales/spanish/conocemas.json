@@ -1,0 +1,87 @@
+{
+  "TITLE": "Conoce más sobre Guanacaste",
+  "CANTON_LABEL": "Cantón",
+  "FOUNDATION": "Fundación",
+  "POPULATION": "Población",
+  "MOST_KNOWN_ACTIVITY": "Actividad más conocida:",
+  "cantones": {
+    "Liberia": {
+      "nombre": "Liberia",
+      "poblacion": "62,000",
+      "fundacion": "1836",
+      "descripcion": "Capital de la provincia, conocida como la \"Ciudad Blanca\", puerta de entrada a playas y parques nacionales como Rincón de la Vieja. Rica en historia y cultura.",
+      "actividad": "Senderismo en Rincón de la Vieja"
+    },
+    "Nicoya": {
+      "nombre": "Nicoya",
+      "poblacion": "50,000",
+      "fundacion": "1523",
+      "descripcion": "Centro cultural e histórico, famosa por su iglesia colonial, tradiciones chorotegas y playas como Sámara y Nosara. Zona Azul de longevidad.",
+      "actividad": "Surf en Playa Nosara"
+    },
+    "Santa Cruz": {
+      "nombre": "Santa Cruz",
+      "poblacion": "60,000",
+      "fundacion": "1834",
+      "descripcion": "Capital folclórica, reconocida por sus fiestas típicas, mascaradas y playas como Tamarindo, Conchal y Avellanas.",
+      "actividad": "Fiestas y mascaradas típicas"
+    },
+    "Bagaces": {
+      "nombre": "Bagaces",
+      "poblacion": "20,000",
+      "fundacion": "1543",
+      "descripcion": "Destino de aguas termales y cascadas, como Llanos de Cortés. Rica en historia y naturaleza.",
+      "actividad": "Baños termales en Llanos de Cortés"
+    },
+    "Carrillo": {
+      "nombre": "Carrillo",
+      "poblacion": "40,000",
+      "fundacion": "1877",
+      "descripcion": "Hogar de Playas del Coco y Hermosa, ideal para turismo de playa, pesca deportiva y vida nocturna.",
+      "actividad": "Pesca deportiva en Playas del Coco"
+    },
+    "Cañas": {
+      "nombre": "Cañas",
+      "poblacion": "27,000",
+      "fundacion": "1878",
+      "descripcion": "Conocida por su cercanía al volcán Tenorio y el Río Celeste, así como por su agricultura y ganadería.",
+      "actividad": "Visita al Río Celeste"
+    },
+    "Abangares": {
+      "nombre": "Abangares",
+      "poblacion": "18,000",
+      "fundacion": "1915",
+      "descripcion": "Famosa por su historia minera y el Parque Minero, además de ríos y montañas.",
+      "actividad": "Turismo minero en el Parque Minero"
+    },
+    "Tilarán": {
+      "nombre": "Tilarán",
+      "poblacion": "20,000",
+      "fundacion": "1923",
+      "descripcion": "Zona de montañas, lagos y viento, ideal para deportes acuáticos, eólicos y paisajes del Lago Arenal.",
+      "actividad": "Deportes acuáticos en el Lago Arenal"
+    },
+    "Nandayure": {
+      "nombre": "Nandayure",
+      "poblacion": "12,000",
+      "fundacion": "1961",
+      "descripcion": "Paisajes rurales, playas tranquilas como Coyote y San Miguel, y tradiciones agrícolas.",
+      "actividad": "Senderismo y ecoturismo en playas tranquilas"
+    },
+    "La Cruz": {
+      "nombre": "La Cruz",
+      "poblacion": "20,000",
+      "fundacion": "1969",
+      "descripcion": "Puerta al Refugio Bahía Junquillal y playas vírgenes del norte, frontera con Nicaragua.",
+      "actividad": "Observación de aves en Bahía Junquillal"
+    },
+    "Hojancha": {
+      "nombre": "Hojancha",
+      "poblacion": "8,000",
+      "fundacion": "1971",
+      "descripcion": "Cantón agrícola y forestal, con playas como Carrillo y reservas naturales. Destaca por su desarrollo humano.",
+      "actividad": "Senderismo en las reservas naturales"
+    }
+  }
+}
+

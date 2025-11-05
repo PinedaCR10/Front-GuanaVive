@@ -9,9 +9,9 @@ import './i18n/config';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthInitializer>
+       <AuthInitializer> 
         <AppRoutes />
-      </AuthInitializer>
+      </AuthInitializer> 
     </BrowserRouter>
   </StrictMode>
 );

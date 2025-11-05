@@ -1,0 +1,87 @@
+{
+  "TITLE": "Learn more about Guanacaste",
+  "CANTON_LABEL": "Canton",
+  "FOUNDATION": "Foundation",
+  "POPULATION": "Population",
+  "MOST_KNOWN_ACTIVITY": "Most known activity:",
+  "cantones": {
+    "Liberia": {
+      "nombre": "Liberia",
+      "poblacion": "62,000",
+      "fundacion": "1836",
+      "descripcion": "Provincial capital, known as the \"White City\", gateway to beaches and national parks like Rincón de la Vieja. Rich in history and culture.",
+      "actividad": "Hiking in Rincón de la Vieja"
+    },
+    "Nicoya": {
+      "nombre": "Nicoya",
+      "poblacion": "50,000",
+      "fundacion": "1523",
+      "descripcion": "Cultural and historical center, famous for its colonial church, Chorotega traditions, and beaches like Sámara and Nosara. Blue Zone of longevity.",
+      "actividad": "Surfing at Nosara Beach"
+    },
+    "Santa Cruz": {
+      "nombre": "Santa Cruz",
+      "poblacion": "60,000",
+      "fundacion": "1834",
+      "descripcion": "Folk capital, recognized for its typical festivals, masquerades, and beaches like Tamarindo, Conchal, and Avellanas.",
+      "actividad": "Typical festivals and masquerades"
+    },
+    "Bagaces": {
+      "nombre": "Bagaces",
+      "poblacion": "20,000",
+      "fundacion": "1543",
+      "descripcion": "Destination for hot springs and waterfalls, like Llanos de Cortés. Rich in history and nature.",
+      "actividad": "Hot springs at Llanos de Cortés"
+    },
+    "Carrillo": {
+      "nombre": "Carrillo",
+      "poblacion": "40,000",
+      "fundacion": "1877",
+      "descripcion": "Home to Playas del Coco and Hermosa, ideal for beach tourism, sport fishing, and nightlife.",
+      "actividad": "Sport fishing at Playas del Coco"
+    },
+    "Cañas": {
+      "nombre": "Cañas",
+      "poblacion": "27,000",
+      "fundacion": "1878",
+      "descripcion": "Known for its proximity to Tenorio Volcano and Celeste River, as well as its agriculture and livestock.",
+      "actividad": "Visit to Celeste River"
+    },
+    "Abangares": {
+      "nombre": "Abangares",
+      "poblacion": "18,000",
+      "fundacion": "1915",
+      "descripcion": "Famous for its mining history and Mining Park, as well as rivers and mountains.",
+      "actividad": "Mining tourism at Mining Park"
+    },
+    "Tilarán": {
+      "nombre": "Tilarán",
+      "poblacion": "20,000",
+      "fundacion": "1923",
+      "descripcion": "Area of mountains, lakes, and wind, ideal for water sports, wind sports, and Lake Arenal landscapes.",
+      "actividad": "Water sports at Lake Arenal"
+    },
+    "Nandayure": {
+      "nombre": "Nandayure",
+      "poblacion": "12,000",
+      "fundacion": "1961",
+      "descripcion": "Rural landscapes, quiet beaches like Coyote and San Miguel, and agricultural traditions.",
+      "actividad": "Hiking and ecotourism on quiet beaches"
+    },
+    "La Cruz": {
+      "nombre": "La Cruz",
+      "poblacion": "20,000",
+      "fundacion": "1969",
+      "descripcion": "Gateway to Bahía Junquillal Refuge and pristine northern beaches, border with Nicaragua.",
+      "actividad": "Bird watching at Bahía Junquillal"
+    },
+    "Hojancha": {
+      "nombre": "Hojancha",
+      "poblacion": "8,000",
+      "fundacion": "1971",
+      "descripcion": "Agricultural and forest canton, with beaches like Carrillo and natural reserves. Stands out for its human development.",
+      "actividad": "Hiking in natural reserves"
+    }
+  }
+}
+
