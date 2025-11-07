@@ -42,6 +42,7 @@ export default function CategoriesDetail() {
     }) || "Categoría";
 
   // ✅ Función auxiliar para mapear datos genéricos
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapData = (data: any[], prefix: string): Item[] =>
     data.map((d) => ({
       id: `${prefix}-${d.id}`,
@@ -97,7 +98,7 @@ export default function CategoriesDetail() {
   // ✅ Filtro y orden
   const filtered = useMemo(() => {
     const todosLabel = t("TODOS", { defaultValue: "Todos" });
-    let arr = allItems.filter(
+    const arr = allItems.filter(
       (i) =>
         (!q ||
           i.name.toLowerCase().includes(q.toLowerCase()) ||
