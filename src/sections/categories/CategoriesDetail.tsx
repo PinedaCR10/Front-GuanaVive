@@ -3,13 +3,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
-// ✅ Importar todos los datasets reales
-import { bailes } from "../../data/databaile";
-import { musica } from "../../data/datamusica";
-import { retahileros } from "../../data/dataretahilero";
-import { eventos } from "../../data/dataeventos";
-import { artesanos } from "../../data/dataartesanos";
-import { haciendas } from "../../data/datahacienda";
+import { bailes } from "../../DATA/DATABAILE";
+import { musica } from "../../DATA/DATAMUSICA";
+import { retahileros } from "../../DATA/DATARETAHILERO";
+import { eventos } from "../../DATA/DATAEVENTOS";
+import { artesanos } from "../../DATA/DATAARTESANOS";
+import { haciendas } from "../../DATA/DATAHACIENDA";
+
 
 type Item = {
   id: string;
