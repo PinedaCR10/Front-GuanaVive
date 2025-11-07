@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 type Item = {
   id: string;
@@ -13,57 +14,32 @@ type Item = {
   image: string;
 };
 
-const TITLES: Record<string, string> = {
-  bailes: "Bailes Folklóricos",
-  musica: "Músicos Folklóricos",
-  retahileros: "Retahileros",
-  eventos: "Eventos",
-  artesanos: "Artesanos",
-  haciendas: "Haciendas",
-};
-
 const CANTONES = [
   "Liberia","Nicoya","Santa Cruz","Cañas","Bagaces",
   "Tilarán","Hojancha","Nandayure","Carrillo","La Cruz",
 ];
 
-function generateItems(slug: string): Item[] {
+function generateItems(slug: string, t: (key: string, options?: any) => string): Item[] {
   return Array.from({ length: 10 }).map((_, i) => {
     const canton = CANTONES[i % CANTONES.length];
-    const nameBase: Record<string, string> = {
-      bailes: "Grupo de Baile",
-      musica: "Artista",
-      retahileros: "Retahilero",
-      eventos: "Evento",
-      artesanos: "Artesano",
-      haciendas: "Hacienda",
-    };
-    const catName = nameBase[slug as keyof typeof nameBase] ?? "Elemento";
+    const nameBase = t(`NAME_BASE.${slug}`, { defaultValue: "Elemento" });
+    const title = t(`TITLES.${slug}`, { defaultValue: slug });
 
     return {
       id: `${slug}-${i + 1}`,
-      name: `${catName} ${i + 1}`,
+      name: `${nameBase} ${i + 1}`,
       canton,
-      category: TITLES[slug] ?? slug,
-      description:
-        "Descripción breve del elemento con enfoque cultural guanacasteco. Información mock para la fase inicial de UI.",
+      category: title,
+      description: t("DESCRIPTION", { defaultValue: "Descripción breve del elemento con enfoque cultural guanacasteco. Información mock para la fase inicial de UI." }),
       references: [
-        { label: "Referencia 1", url: "https://es.wikipedia.org/wiki/Guanacaste" },
-        { label: "Referencia 2", url: "https://www.museosdecostarica.go.cr/" },
+        { label: t("REFERENCE_1", { defaultValue: "Referencia 1" }), url: "https://es.wikipedia.org/wiki/Guanacaste" },
+        { label: t("REFERENCE_2", { defaultValue: "Referencia 2" }), url: "https://www.museosdecostarica.go.cr/" },
       ],
       image: `https://picsum.photos/seed/gv-${slug}-${i}/640/420`,
     };
   });
 }
 
-const MOCK: Record<string, Item[]> = {
-  musica: generateItems("musica"),
-  bailes: generateItems("bailes"),
-  retahileros: generateItems("retahileros"),
-  eventos: generateItems("eventos"),
-  artesanos: generateItems("artesanos"),
-  haciendas: generateItems("haciendas"),
-};
 
 const listVariants: Variants = {
   hidden: { opacity: 0 },
@@ -76,15 +52,23 @@ const rowVariants: Variants = {
 };
 
 export default function CategoriesDetail() {
+  const { t } = useTranslation("categorias-detail");
   const { slug = "" } = useParams();
   const navigate = useNavigate();
 
-  const title = TITLES[slug] ?? slug.charAt(0).toUpperCase() + slug.slice(1);
-  const allItems = useMemo<Item[]>(() => (MOCK[slug as keyof typeof MOCK] ?? []), [slug]);
+  const title = t(`TITLES.${slug}`, { defaultValue: slug.charAt(0).toUpperCase() + slug.slice(1) });
+  
+  const allItems = useMemo<Item[]>(() => {
+    const validSlugs = ["musica", "bailes", "retahileros", "eventos", "artesanos", "haciendas"];
+    if (validSlugs.includes(slug)) {
+      return generateItems(slug, t);
+    }
+    return [];
+  }, [slug, t]);
 
   const [q, setQ] = useState("");
   const cantones = useMemo(() => Array.from(new Set(allItems.map((i) => i.canton))).sort(), [allItems]);
-  const [canton, setCanton] = useState<string>("Todos");
+  const [canton, setCanton] = useState<string>(t("TODOS", { defaultValue: "Todos" }));
   const [order, setOrder] = useState<"az" | "za">("az");
 
   const [selected, setSelected] = useState<Item | null>(null);
@@ -95,18 +79,19 @@ export default function CategoriesDetail() {
   }, []);
 
   const filtered = useMemo(() => {
+    const todosLabel = t("TODOS", { defaultValue: "Todos" });
     let arr = allItems.filter(
       (i) =>
         (!q ||
           i.name.toLowerCase().includes(q.toLowerCase()) ||
           i.description.toLowerCase().includes(q.toLowerCase())) &&
-        (canton === "Todos" || i.canton === canton)
+        (canton === todosLabel || i.canton === canton)
     );
     arr.sort((a, b) =>
       order === "az" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
     );
     return arr;
-  }, [allItems, q, canton, order]);
+  }, [allItems, q, canton, order, t]);
 
   return (
     <section className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6 py-10" style={{ background: "var(--bg)" }}>
@@ -119,7 +104,7 @@ export default function CategoriesDetail() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Buscar por nombre..."
+            placeholder={t("SEARCH_PLACEHOLDER", { defaultValue: "Buscar por nombre..." })}
             className="h-10 rounded-lg border px-3 text-sm outline-none focus:ring-2"
             style={{
               background: "var(--bg-soft)",
@@ -133,7 +118,7 @@ export default function CategoriesDetail() {
             className="h-10 rounded-lg border px-3 text-sm"
             style={{ background: "var(--bg-soft)", color: "var(--text)", borderColor: "var(--card-border)" }}
           >
-            <option>Todos</option>
+            <option>{t("TODOS", { defaultValue: "Todos" })}</option>
             {cantones.map((c) => (
               <option key={c}>{c}</option>
             ))}
@@ -144,15 +129,15 @@ export default function CategoriesDetail() {
             className="h-10 rounded-lg border px-3 text-sm"
             style={{ background: "var(--bg-soft)", color: "var(--text)", borderColor: "var(--card-border)" }}
           >
-            <option value="az">Nombre A–Z</option>
-            <option value="za">Nombre Z–A</option>
+            <option value="az">{t("ORDER_AZ", { defaultValue: "Nombre A–Z" })}</option>
+            <option value="za">{t("ORDER_ZA", { defaultValue: "Nombre Z–A" })}</option>
           </select>
           <button
             onClick={() => navigate(-1)}
             className="h-10 rounded-lg border px-3 text-sm font-medium"
             style={{ borderColor: "var(--card-border)", color: "var(--text)", background: "var(--bg-soft)" }}
           >
-            Regresar
+            {t("REGRESAR", { defaultValue: "Regresar" })}
           </button>
         </div>
       </div>
@@ -160,7 +145,7 @@ export default function CategoriesDetail() {
       <hr className="mb-6" style={{ borderColor: "var(--card-border)" }} />
 
       {filtered.length === 0 ? (
-        <p style={{ color: "var(--text)" }}>No hay resultados.</p>
+        <p style={{ color: "var(--text)" }}>{t("NO_RESULTS", { defaultValue: "No hay resultados." })}</p>
       ) : (
         <motion.ul
           className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
@@ -187,11 +172,11 @@ export default function CategoriesDetail() {
 
                 <dl className="mt-1 text-xs" style={{ color: "var(--text)" }}>
                   <div className="flex gap-2">
-                    <dt className="font-medium">Categoría:</dt>
+                    <dt className="font-medium">{t("CATEGORIA", { defaultValue: "Categoría:" })}</dt>
                     <dd className="truncate">{item.category}</dd>
                   </div>
                   <div className="flex gap-2">
-                    <dt className="font-medium">Cantón:</dt>
+                    <dt className="font-medium">{t("CANTON", { defaultValue: "Cantón:" })}</dt>
                     <dd>{item.canton}</dd>
                   </div>
                 </dl>
@@ -249,15 +234,15 @@ export default function CategoriesDetail() {
                 <div className="mb-3">
                   <h3 className="text-lg font-semibold">{selected.name}</h3>
                   <p className="text-sm" style={{ color: "var(--text)" }}>
-                    <span className="font-medium">Categoría:</span> {selected.category} •{" "}
-                    <span className="font-medium">Cantón:</span> {selected.canton}
+                    <span className="font-medium">{t("CATEGORIA", { defaultValue: "Categoría:" })}</span> {selected.category} •{" "}
+                    <span className="font-medium">{t("CANTON", { defaultValue: "Cantón:" })}</span> {selected.canton}
                   </p>
                 </div>
 
                 <p className="text-sm">{selected.description}</p>
 
                 <div className="mt-4">
-                  <p className="text-sm font-semibold">Referencias</p>
+                  <p className="text-sm font-semibold">{t("REFERENCIAS", { defaultValue: "Referencias" })}</p>
                   <div className="mt-1 flex flex-wrap gap-3">
                     {selected.references.map((r, i) => (
                       <a
@@ -280,7 +265,7 @@ export default function CategoriesDetail() {
                     className="rounded-lg border px-4 py-2 text-sm font-medium"
                     style={{ borderColor: "var(--card-border)", color: "var(--text)", background: "var(--bg-soft)" }}
                   >
-                    Cerrar
+                    {t("CERRAR", { defaultValue: "Cerrar" })}
                   </button>
                 </div>
               </div>

@@ -30,16 +30,16 @@ export const AppRoutes = () => {
       </Route>
 
       {/* Auth Routes (only for non-authenticated users) */}
-      <Route element={<PublicRoute redirectTo="/" />}>
+       <Route element={<PublicRoute redirectTo="/" />}> 
         <Route path="/auth">
           <Route index element={<Navigate to="/auth/login" replace />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
         </Route>
-      </Route>
+      </Route> 
 
       {/* Private Routes (only for authenticated users) */}
-      <Route element={<PrivateRoute redirectTo="/auth/login" />}>
+       <Route element={<PrivateRoute redirectTo="/auth/login" />}> 
         <Route element={<GlobalLayout showTop />}>
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/plans" element={<PlansPage />} />
@@ -50,14 +50,14 @@ export const AppRoutes = () => {
           <Route path="/my-publications/create" element={<CreateEditPublication />} />
           <Route path="/my-publications/edit/:id" element={<CreateEditPublication />} />
         </Route>
-      </Route>
+       </Route> 
 
       {/* Admin Routes (only for authenticated admin users) */}
-      <Route element={<AdminRoute redirectTo="/" />}>
+       <Route element={<AdminRoute redirectTo="/" />}> 
         <Route element={<GlobalLayout showTop={false} />}>
           <Route path="/admin/*" element={<AdminDashboard />} />
         </Route>
-      </Route>
+       </Route>
 
       {/* Redirects */}
       <Route path="/login" element={<Navigate to="/auth/login" replace />} />
