@@ -39,6 +39,14 @@ export const API_ROUTES = {
     BY_ID: (id: string) => `/subscriptions/${id}`,
     UPDATE_ACCESS: (id: string) => `/subscriptions/${id}/last-access`,
   },
+  ADMIN: {
+    DASHBOARD_STATS: '/admin/dashboard/stats',
+    USERS_STATS: '/admin/users/stats',
+    PUBLICATIONS_STATS: '/admin/publications/stats',
+    CATEGORIES_STATS: '/admin/categories/stats',
+    SUBSCRIPTIONS_STATS: '/admin/subscriptions/stats',
+    RECENT_ACTIVITIES: '/admin/activities/recent',
+  },
 } as const;
 
 export const STORAGE_KEYS = {

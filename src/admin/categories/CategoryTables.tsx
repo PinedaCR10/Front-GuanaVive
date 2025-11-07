@@ -43,7 +43,7 @@ const CategoryTable: React.FC<Props> = ({ search }) => {
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editCategory || newName.trim() === "") return;
-    await categoryService.update({ id: editCategory.id, name: newName.trim() });
+    await categoryService.update(editCategory.id, { name: newName.trim() });
     setShowEditModal(false);
     load();
   };

@@ -1,9 +1,13 @@
 import { apiClient } from '../../../core/api';
 import { API_ROUTES } from '../../../core/constants';
 import type { ApiResponse, PaginationParams } from '../../../core/types';
-import type { User, UpdateProfileDto, ChangePasswordDto, UploadAvatarDto } from '../types';
+import type { User, CreateUserDto, UpdateProfileDto, ChangePasswordDto, UploadAvatarDto } from '../types';
 
 export const usersApi = {
+  async create(dto: CreateUserDto): Promise<ApiResponse<User>> {
+    return await apiClient.post<User>(API_ROUTES.USERS.BASE, dto);
+  },
+
   async getAll(params?: PaginationParams): Promise<ApiResponse<User[]>> {
     const queryString = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : '';
     return await apiClient.get<User[]>(`${API_ROUTES.USERS.BASE}${queryString}`);

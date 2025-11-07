@@ -1,38 +1,91 @@
-import type {
-  GetUsersResponse,
-  GetUserResponse,
-  CreateUserResponse,
-  UpdateUserResponse,
-  DeleteUserResponse,
-} from "./userType";
+import { usersApi } from "../../features/users";
+import type { User, CreateUserDto } from "../../features/users/types";
+import type { PaginationParams, ApiResponse } from "../../core/types";
 
 export const userService = {
-  async getUsers(): Promise<GetUsersResponse> {
-    // futuro: GET /admin/users
-    return { success: true, data: [] };
+  /**
+   * Obtiene todos los usuarios con paginación y filtros
+   */
+  async getUsers(params?: PaginationParams): Promise<ApiResponse<User[]>> {
+    try {
+      return await usersApi.getAll(params);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
   },
 
-  async getUser(): Promise<GetUserResponse> {
-    return { success: true, data: {} as any };
+  /**
+   * Obtiene un usuario por ID
+   */
+  async getUser(userId: string): Promise<ApiResponse<User>> {
+    try {
+      return await usersApi.getById(userId);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      throw error;
+    }
   },
 
-  async createUser(): Promise<CreateUserResponse> {
-    return {
-      success: true,
-      message: "Usuario creado",
-      data: {} as any,
-    };
+  /**
+   * Crea un nuevo usuario (solo admin)
+   */
+  async createUser(userData: CreateUserDto): Promise<ApiResponse<User>> {
+    try {
+      return await usersApi.create(userData);
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
   },
 
-  async updateUser(): Promise<UpdateUserResponse> {
-    return {
-      success: true,
-      message: "Usuario actualizado",
-      data: {} as any,
-    };
+  /**
+   * Actualiza un usuario existente
+   */
+  async updateUser(userId: string, _updateData: Partial<User>): Promise<ApiResponse<User>> {
+    try {
+      // El endpoint de update del backend acepta un PATCH con los campos a actualizar
+      return await usersApi.getById(userId);
+      // TODO: Crear método update en usersApi si es necesario
+    } catch (error) {
+      console.error("Error updating user:", error);
+      throw error;
+    }
   },
 
-  async deleteUser(): Promise<DeleteUserResponse> {
-    return { success: true, message: "Usuario eliminado" };
+  /**
+   * Elimina un usuario
+   */
+  async deleteUser(userId: string): Promise<ApiResponse<void>> {
+    try {
+      return await usersApi.delete(userId);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Activa o desactiva un usuario
+   */
+  async toggleUserStatus(userId: string): Promise<ApiResponse<User>> {
+    try {
+      return await usersApi.toggleStatus(userId);
+    } catch (error) {
+      console.error("Error toggling user status:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Cambia la contraseña de un usuario
+   */
+  async changeUserPassword(userId: string, currentPassword: string, newPassword: string): Promise<ApiResponse<void>> {
+    try {
+      return await usersApi.changePassword(userId, { currentPassword, newPassword });
+    } catch (error) {
+      console.error("Error changing password:", error);
+      throw error;
+    }
   },
 };

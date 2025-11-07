@@ -37,3 +37,13 @@ export interface ChangePasswordDto {
 export interface UploadAvatarDto {
   avatarUrl: string;
 }
+
+export interface CreateUserDto {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  role?: UserRole;
+  phone?: string;
+  isActive?: boolean;
+}
