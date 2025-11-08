@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { useAuth } from "../features/auth";
 import { useTranslation } from "react-i18next";
+import { LayoutDashboard, User, Crown, FileText, LogOut } from "lucide-react";
 
 const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
   if (to.includes('#')) {
@@ -122,43 +123,43 @@ export default function Navbar() {
                       navigate('/dashboard');
                       setUserMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm flex items-center gap-2"
                   >
-                    📊 Dashboard
+                    <LayoutDashboard className="w-4 h-4" /> Dashboard
                   </button>
                   <button
                     onClick={() => {
                       navigate('/profile');
                       setUserMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm flex items-center gap-2"
                   >
-                    👤 {t("MI_PERFIL", { defaultValue: "Mi Perfil" })}
+                    <User className="w-4 h-4" /> {t("MI_PERFIL", { defaultValue: "Mi Perfil" })}
                   </button>
                   <button
                     onClick={() => {
                       navigate('/plans');
                       setUserMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm flex items-center gap-2"
                   >
-                    💎 {t("PLANES", { defaultValue: "Planes" })}
+                    <Crown className="w-4 h-4" /> {t("PLANES", { defaultValue: "Planes" })}
                   </button>
                   <button
                     onClick={() => {
                       navigate('/my-publications');
                       setUserMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm"
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--gv-primary-100)] text-[var(--gv-text)] text-sm flex items-center gap-2"
                   >
-                    📝 {t("MIS_PUBLICACIONES", { defaultValue: "Mis Publicaciones" })}
+                    <FileText className="w-4 h-4" /> {t("MIS_PUBLICACIONES", { defaultValue: "Mis Publicaciones" })}
                   </button>
                   <div className="border-t border-[var(--gv-border)] my-2"></div>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 text-sm"
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 text-sm flex items-center gap-2"
                   >
-                    🚪 {t("CERRAR_SESION", { defaultValue: "Cerrar Sesión" })}
+                    <LogOut className="w-4 h-4" /> {t("CERRAR_SESION", { defaultValue: "Cerrar Sesión" })}
                   </button>
                 </div>
               )}

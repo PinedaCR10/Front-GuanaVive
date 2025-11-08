@@ -33,6 +33,18 @@ html.dark{
   color-scheme:dark;
   --bg:#0b0f19; --bg-soft:#111827; --text:#e5e7eb; --text-soft:#cbd5e1;
   --card:#0f172a; --card-border:#1f2937; --shadow:0 2px 8px rgba(0,0,0,.35); --ring:rgba(59,130,246,.35);
+  
+  /* Tokens Guanacaste Dark Mode */
+  --gv-bg: #0f172a;
+  --gv-surface: #1e293b;
+  --gv-text: #f1f5f9;
+  --gv-muted: #94a3b8;
+  --gv-primary: #3b82f6;
+  --gv-primary-600: #2563eb;
+  --gv-primary-100: #1e3a8a;
+  --gv-accent: #e879f9;
+  --gv-accent-100: #581c87;
+  --gv-border: #334155;
 }
 
 @media (prefers-color-scheme: dark){
@@ -40,15 +52,50 @@ html.dark{
     color-scheme:dark;
     --bg:#0b0f19; --bg-soft:#111827; --text:#e5e7eb; --text-soft:#cbd5e1;
     --card:#0f172a; --card-border:#1f2937; --shadow:0 2px 8px rgba(0,0,0,.35); --ring:rgba(59,130,246,.35);
+    
+    /* Tokens Guanacaste Dark Mode */
+    --gv-bg: #0f172a;
+    --gv-surface: #1e293b;
+    --gv-text: #f1f5f9;
+    --gv-muted: #94a3b8;
+    --gv-primary: #3b82f6;
+    --gv-primary-600: #2563eb;
+    --gv-primary-100: #1e3a8a;
+    --gv-accent: #e879f9;
+    --gv-accent-100: #581c87;
+    --gv-border: #334155;
   }
 }
 
 /* utilidades */
 .container { @apply mx-auto w-full max-w-[1100px] px-4; }
-.card      { @apply bg-white border border-[var(--gv-border)] rounded-2xl shadow-sm; }
+.card      { @apply bg-[var(--gv-surface)] border border-[var(--gv-border)] rounded-2xl shadow-sm; }
 .btn       { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition active:scale-[.98]; }
 .btn-primary { @apply text-white bg-[var(--gv-primary)] hover:bg-[var(--gv-primary-600)]; }
 .btn-outline { @apply text-[var(--gv-primary)] border border-[var(--gv-primary)] hover:bg-[var(--gv-primary-100)]; }
 
-.card h2 { color: var(--text) !important; }
-.card p  { color: var(--text-soft) !important; }
+.card h2 { color: var(--gv-text) !important; }
+.card p  { color: var(--gv-muted) !important; }
+
+/* Inputs compatibles con dark mode */
+input, textarea, select {
+  background-color: var(--gv-surface);
+  color: var(--gv-text);
+  border-color: var(--gv-border);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--gv-muted);
+  opacity: 0.6;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--gv-primary);
+  ring-color: var(--gv-primary);
+}
+
+/* Labels */
+label {
+  color: var(--gv-text);
+}

@@ -5,7 +5,17 @@ import type { Category, CreateCategoryDto, UpdateCategoryDto } from '../types';
 
 export const categoriesApi = {
   async getAll(params?: PaginationParams): Promise<ApiResponse<Category[]>> {
-    const queryString = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : '';
+    let queryString = '';
+    if (params) {
+      const queryParams = new URLSearchParams();
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+      if (params.limit !== undefined) queryParams.append('limit', String(params.limit));
+      if (params.search) queryParams.append('search', params.search);
+      if (params.sortBy) queryParams.append('sortBy', params.sortBy);
+      if (params.order) queryParams.append('order', params.order);
+      const qs = queryParams.toString();
+      if (qs) queryString = `?${qs}`;
+    }
     return await apiClient.get<Category[]>(`${API_ROUTES.CATEGORIES.BASE}${queryString}`);
   },
 

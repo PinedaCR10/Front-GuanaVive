@@ -9,7 +9,7 @@ export default function UserHeader() {
   return (
     <>
       <header className="w-full bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-blue-700">GuanaVive</h1>
+        <h1 className="text-xl font-bold text-[var(--gv-primary)]">GuanaVive</h1>
 
         <button
           onClick={() => setOpen(true)}

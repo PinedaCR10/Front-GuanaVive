@@ -13,6 +13,7 @@ import UserHome from '../accessusers/UserHome';
 import UserProfile from '../pages/UserProfile';
 import UserDashboard from '../pages/UserDashboard';
 import PlansPage from '../pages/PlansPage';
+import CheckoutPage from '../pages/CheckoutPage';
 import CategoriesDetail from '../sections/categories/CategoriesDetail';
 import Gallery from '../sections/homepage/gallery';
 import GalleryDetail from '../sections/gallery/GalleryDetail';
@@ -43,6 +44,7 @@ export const AppRoutes = () => {
         <Route element={<GlobalLayout showTop />}>
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/plans" element={<PlansPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/feed" element={<UserFeed />} />
           <Route path="/user-home" element={<UserHome />} />
           <Route path="/profile" element={<UserProfile />} />
@@ -53,10 +55,8 @@ export const AppRoutes = () => {
        </Route> 
 
       {/* Admin Routes (only for authenticated admin users) */}
-       <Route element={<AdminRoute redirectTo="/" />}> 
-        <Route element={<GlobalLayout showTop={false} />}>
-          <Route path="/admin/*" element={<AdminDashboard />} />
-        </Route>
+       <Route element={<AdminRoute redirectTo="/dashboard" />}> 
+        <Route path="/admin/*" element={<AdminDashboard />} />
        </Route>
 
       {/* Redirects */}

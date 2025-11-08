@@ -32,8 +32,13 @@ export const categoryService = {
       };
 
       const response = await categoriesApi.getAll(paginationParams);
+      
+      console.log("Categories API Response:", response);
 
-      if (!response.success || !response.data) {
+      // response ya es ApiResponse<Category[]>
+      // response.data es el array de categorías
+      if (!response.data || !Array.isArray(response.data)) {
+        console.warn("No categories data received or not an array");
         return {
           data: [],
           meta: {

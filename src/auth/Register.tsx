@@ -65,26 +65,26 @@ export default function RegisterPage() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Nombre</label>
+            <label className="mb-1 block text-sm font-medium text-[var(--gv-text)]">Nombre</label>
             <input
               value={form.firstName}
               onChange={(e) => set('firstName', e.target.value)}
               placeholder="Tu nombre"
-              className={`w-full rounded-lg border px-4 py-2 outline-none focus:border-[#1f6fb2] focus:ring-1 focus:ring-[#1f6fb2] ${
-                errors.firstName ? 'border-red-400' : 'border-gray-300'
+              className={`w-full rounded-lg border bg-[var(--gv-surface)] text-[var(--gv-text)] px-4 py-2 outline-none focus:border-[var(--gv-primary)] focus:ring-1 focus:ring-[var(--gv-primary)] ${
+                errors.firstName ? 'border-red-400' : 'border-[var(--gv-border)]'
               }`}
             />
             {errors.firstName && <p className="mt-1 text-xs text-red-600">{errors.firstName}</p>}
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Apellido</label>
+            <label className="mb-1 block text-sm font-medium text-[var(--gv-text)]">Apellido</label>
             <input
               value={form.lastName}
               onChange={(e) => set('lastName', e.target.value)}
               placeholder="Tu apellido"
-              className={`w-full rounded-lg border px-4 py-2 outline-none focus:border-[#1f6fb2] focus:ring-1 focus:ring-[#1f6fb2] ${
-                errors.lastName ? 'border-red-400' : 'border-gray-300'
+              className={`w-full rounded-lg border bg-[var(--gv-surface)] text-[var(--gv-text)] px-4 py-2 outline-none focus:border-[var(--gv-primary)] focus:ring-1 focus:ring-[var(--gv-primary)] ${
+                errors.lastName ? 'border-red-400' : 'border-[var(--gv-border)]'
               }`}
             />
             {errors.lastName && <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>}
@@ -92,21 +92,21 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Correo</label>
+          <label className="mb-1 block text-sm font-medium text-[var(--gv-text)]">Correo</label>
           <input
             type="email"
             value={form.email}
             onChange={(e) => set("email", e.target.value)}
             placeholder="tucorreo@ejemplo.com"
-            className={`w-full rounded-lg border px-4 py-2 outline-none focus:border-[#1f6fb2] focus:ring-1 focus:ring-[#1f6fb2] ${
-              errors.email ? "border-red-400" : "border-gray-300"
+            className={`w-full rounded-lg border bg-[var(--gv-surface)] text-[var(--gv-text)] px-4 py-2 outline-none focus:border-[var(--gv-primary)] focus:ring-1 focus:ring-[var(--gv-primary)] ${
+              errors.email ? "border-red-400" : "border-[var(--gv-border)]"
             }`}
           />
           {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Contraseña</label>
+          <label className="mb-1 block text-sm font-medium text-[var(--gv-text)]">Contraseña</label>
           <PasswordInput
             value={form.password}
             onChange={(e) => set("password", e.target.value)}
@@ -114,7 +114,7 @@ export default function RegisterPage() {
           />
           {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
           {!errors.password && (
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-[var(--gv-muted)]">
               Debe contener mayúscula, minúscula y número (6-20 caracteres)
             </p>
           )}
@@ -123,21 +123,21 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="mt-2 w-full rounded-lg bg-[#1f6fb2] px-4 py-2 font-semibold text-white shadow hover:bg-[#195d92] disabled:opacity-60"
+          className="mt-2 w-full rounded-lg bg-[var(--gv-primary)] px-4 py-2 font-semibold text-white shadow hover:bg-[var(--gv-primary-600)] disabled:opacity-60"
         >
           {isLoading ? 'Creando cuenta...' : 'Registrarme'}
         </button>
 
         <Link
           to="/"
-          className="block w-full text-center rounded-lg border border-[#1f6fb2] px-4 py-2 font-semibold text-[#1f6fb2] hover:bg-[#1f6fb2] hover:text-white transition"
+          className="block w-full text-center rounded-lg border border-[var(--gv-primary)] px-4 py-2 font-semibold text-[var(--gv-primary)] hover:bg-[var(--gv-primary)] hover:text-white transition"
         >
           Volver al inicio
         </Link>
 
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-[var(--gv-muted)]">
           ¿Ya tienes cuenta?{" "}
-          <Link className="font-semibold text-[#1f6fb2] hover:underline" to="/auth/login">
+          <Link className="font-semibold text-[var(--gv-primary)] hover:underline" to="/auth/login">
             Inicia sesión
           </Link>
         </p>

@@ -30,7 +30,19 @@ const normalizePublications = (publications: Publication[]): Publication[] => {
 
 export const publicationsApi = {
   async getAll(params?: PublicationQueryParams): Promise<ApiResponse<Publication[]>> {
-    const queryString = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : '';
+    let queryString = '';
+    if (params) {
+      const queryParams = new URLSearchParams();
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+      if (params.limit !== undefined) queryParams.append('limit', String(params.limit));
+      if (params.search) queryParams.append('search', params.search);
+      if (params.status) queryParams.append('status', params.status);
+      if (params.category) queryParams.append('category', params.category);
+      if (params.sortBy) queryParams.append('sortBy', params.sortBy);
+      if (params.order) queryParams.append('order', params.order);
+      const qs = queryParams.toString();
+      if (qs) queryString = `?${qs}`;
+    }
     const response = await apiClient.get<Publication[]>(`${API_ROUTES.PUBLICATIONS.BASE}${queryString}`);
     if (response.data) {
       response.data = normalizePublications(response.data);
@@ -92,7 +104,15 @@ export const publicationsApi = {
   },
 
   async getPending(params?: PublicationQueryParams): Promise<ApiResponse<Publication[]>> {
-    const queryString = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : '';
+    let queryString = '';
+    if (params) {
+      const queryParams = new URLSearchParams();
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+      if (params.limit !== undefined) queryParams.append('limit', String(params.limit));
+      if (params.search) queryParams.append('search', params.search);
+      const qs = queryParams.toString();
+      if (qs) queryString = `?${qs}`;
+    }
     const response = await apiClient.get<Publication[]>(`${API_ROUTES.PUBLICATIONS.PENDING}${queryString}`);
     if (response.data) {
       response.data = normalizePublications(response.data);

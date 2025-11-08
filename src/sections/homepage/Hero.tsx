@@ -51,7 +51,7 @@ export default function Hero() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold drop-shadow-2xl leading-tight">
             <span className="block mb-2 text-white drop-shadow-lg">{t("WELCOME", { defaultValue: "Bienvenidos a" })}</span>
             <span className="inline-block">
-              <span className="inline-block text-blue-500 drop-shadow-lg">
+              <span className="inline-block text-[var(--gv-primary)] drop-shadow-lg">
                 {t("GUANA", { defaultValue: "Guana" })}
               </span>
               <span className="inline-block text-red-500 drop-shadow-lg">
@@ -68,7 +68,7 @@ export default function Hero() {
             <span className="text-white drop-shadow-lg">
               {t("AND_KNOW", { defaultValue: "y conocé a los artistas locales:" })}{" "}
               <span className="font-bold text-red-500">{t("MUSIC", { defaultValue: "música" })}</span>,{" "}
-              <span className="font-bold text-blue-500">{t("DANCE", { defaultValue: "danza" })}</span>,{" "}
+              <span className="font-bold text-[var(--gv-primary)]">{t("DANCE", { defaultValue: "danza" })}</span>,{" "}
               <span className="font-bold text-red-500">{t("CRAFTS", { defaultValue: "artesanía" })}</span> {t("AND_MORE", { defaultValue: "y más." })}
             </span>
           </p>

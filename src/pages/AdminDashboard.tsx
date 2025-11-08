@@ -10,6 +10,8 @@ import AdminSubscriptions from "../admin/suscriptions/AdminSuscriptions";
 const AdminDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  console.log('🎯 AdminDashboard: Renderizando componente');
+
   return (
     <div className="flex min-h-screen bg-gray-100 text-gray-900">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />

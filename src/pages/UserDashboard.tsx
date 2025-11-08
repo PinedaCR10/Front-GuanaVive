@@ -1,5 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  BookOpen, 
+  CheckCircle2, 
+  Clock, 
+  FileText, 
+  Crown, 
+  Search, 
+  FileEdit, 
+  User, 
+  Plus,
+  Image as ImageIcon,
+  TrendingUp
+} from 'lucide-react';
 import { useAuth } from '../features/auth';
 import { usePublications } from '../features/publications';
 import { useSubscriptions, PLANS } from '../features/subscriptions';
@@ -39,7 +52,7 @@ export default function UserDashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-[var(--gv-text)]">
-              ¡Bienvenido, {user?.firstName}! 👋
+              ¡Bienvenido, {user?.firstName}!
             </h1>
             <p className="text-[var(--gv-muted)] mt-2">
               Aquí está el resumen de tu actividad en GuanaVive
@@ -47,45 +60,54 @@ export default function UserDashboard() {
           </div>
           <button
             onClick={() => navigate('/my-publications/create')}
-            className="btn btn-primary"
+            className="btn btn-primary flex items-center gap-2"
           >
-            ➕ Nueva Publicación
+            <Plus className="w-5 h-5" />
+            Nueva Publicación
           </button>
         </div>
 
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div className="card p-6">
+          <div className="card p-6 border-l-4 border-[var(--gv-primary)]">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-medium text-[var(--gv-muted)]">Total</h3>
-              <span className="text-2xl">📚</span>
+              <div className="p-2 bg-[var(--gv-primary-100)] rounded-lg">
+                <BookOpen className="w-6 h-6 text-[var(--gv-primary)]" />
+              </div>
             </div>
             <p className="text-3xl font-bold text-[var(--gv-text)]">{stats.total}</p>
             <p className="text-xs text-[var(--gv-muted)] mt-1">Publicaciones totales</p>
           </div>
 
-          <div className="card p-6">
+          <div className="card p-6 border-l-4 border-green-500">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-medium text-[var(--gv-muted)]">Publicadas</h3>
-              <span className="text-2xl">✅</span>
+              <div className="p-2 bg-green-100 rounded-lg">
+                <CheckCircle2 className="w-6 h-6 text-green-600" />
+              </div>
             </div>
             <p className="text-3xl font-bold text-green-600">{stats.publicadas}</p>
             <p className="text-xs text-[var(--gv-muted)] mt-1">Aprobadas y visibles</p>
           </div>
 
-          <div className="card p-6">
+          <div className="card p-6 border-l-4 border-yellow-500">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-medium text-[var(--gv-muted)]">Pendientes</h3>
-              <span className="text-2xl">⏳</span>
+              <div className="p-2 bg-yellow-100 rounded-lg">
+                <Clock className="w-6 h-6 text-yellow-600" />
+              </div>
             </div>
             <p className="text-3xl font-bold text-yellow-600">{stats.pendientes}</p>
             <p className="text-xs text-[var(--gv-muted)] mt-1">En revisión</p>
           </div>
 
-          <div className="card p-6">
+          <div className="card p-6 border-l-4 border-gray-400">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-medium text-[var(--gv-muted)]">Borradores</h3>
-              <span className="text-2xl">📝</span>
+              <div className="p-2 bg-gray-100 rounded-lg">
+                <FileText className="w-6 h-6 text-gray-600" />
+              </div>
             </div>
             <p className="text-3xl font-bold text-gray-600">{stats.borradores}</p>
             <p className="text-xs text-[var(--gv-muted)] mt-1">Sin publicar</p>
@@ -96,7 +118,8 @@ export default function UserDashboard() {
         <div className="grid gap-6 md:grid-cols-2">
           <div className="card p-6">
             <h2 className="text-xl font-bold text-[var(--gv-text)] mb-4 flex items-center gap-2">
-              💎 Tu Plan Actual
+              <Crown className="w-6 h-6 text-[var(--gv-primary)]" />
+              Tu Plan Actual
             </h2>
             
             {subscription && currentPlan ? (
@@ -121,8 +144,8 @@ export default function UserDashboard() {
 
                 <div className="space-y-2 mb-4">
                   {currentPlan.features.map((feature: string, idx: number) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm text-[var(--gv-muted)]">
-                      <span className="text-green-600">✓</span>
+                    <div key={idx} className="flex items-center gap-2 text-sm text-[var(--gv-text)]">
+                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
                       {feature}
                     </div>
                   ))}
@@ -152,8 +175,9 @@ export default function UserDashboard() {
 
           {/* Accesos Rápidos */}
           <div className="card p-6">
-            <h2 className="text-xl font-bold text-[var(--gv-text)] mb-4">
-              🚀 Accesos Rápidos
+            <h2 className="text-xl font-bold text-[var(--gv-text)] mb-4 flex items-center gap-2">
+              <TrendingUp className="w-6 h-6 text-[var(--gv-primary)]" />
+              Accesos Rápidos
             </h2>
             
             <div className="space-y-3">
@@ -162,7 +186,9 @@ export default function UserDashboard() {
                 className="w-full text-left px-4 py-3 rounded-lg border border-[var(--gv-border)] hover:border-[var(--gv-primary)] hover:bg-[var(--gv-primary-100)] transition"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">🔍</span>
+                  <div className="p-2 bg-[var(--gv-primary-100)] rounded-lg">
+                    <Search className="w-5 h-5 text-[var(--gv-primary)]" />
+                  </div>
                   <div>
                     <p className="font-semibold text-[var(--gv-text)]">Explorar</p>
                     <p className="text-xs text-[var(--gv-muted)]">Ver todas las publicaciones</p>
@@ -175,7 +201,9 @@ export default function UserDashboard() {
                 className="w-full text-left px-4 py-3 rounded-lg border border-[var(--gv-border)] hover:border-[var(--gv-primary)] hover:bg-[var(--gv-primary-100)] transition"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">📝</span>
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <FileEdit className="w-5 h-5 text-green-600" />
+                  </div>
                   <div>
                     <p className="font-semibold text-[var(--gv-text)]">Mis Publicaciones</p>
                     <p className="text-xs text-[var(--gv-muted)]">Gestionar mis contenidos</p>
@@ -188,7 +216,9 @@ export default function UserDashboard() {
                 className="w-full text-left px-4 py-3 rounded-lg border border-[var(--gv-border)] hover:border-[var(--gv-primary)] hover:bg-[var(--gv-primary-100)] transition"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">👤</span>
+                  <div className="p-2 bg-gray-100 rounded-lg">
+                    <User className="w-5 h-5 text-gray-600" />
+                  </div>
                   <div>
                     <p className="font-semibold text-[var(--gv-text)]">Mi Perfil</p>
                     <p className="text-xs text-[var(--gv-muted)]">Editar información personal</p>
@@ -202,8 +232,9 @@ export default function UserDashboard() {
         {/* Últimas Publicaciones */}
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-[var(--gv-text)]">
-              📋 Últimas Publicaciones
+            <h2 className="text-xl font-bold text-[var(--gv-text)] flex items-center gap-2">
+              <FileText className="w-6 h-6 text-[var(--gv-primary)]" />
+              Últimas Publicaciones
             </h2>
             <button
               onClick={() => navigate('/my-publications')}
@@ -239,8 +270,8 @@ export default function UserDashboard() {
                         className="w-12 h-12 rounded object-cover"
                       />
                     ) : (
-                      <div className="w-12 h-12 rounded bg-gray-200 flex items-center justify-center text-xl">
-                        📄
+                      <div className="w-12 h-12 rounded bg-gray-200 flex items-center justify-center">
+                        <ImageIcon className="w-6 h-6 text-gray-400" />
                       </div>
                     )}
                     <div className="flex-1">

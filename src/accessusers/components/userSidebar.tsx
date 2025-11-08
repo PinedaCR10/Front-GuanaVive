@@ -83,15 +83,15 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
               <>
                 <button
                   onClick={() => setStep(isSubscribed ? "form" : "plans")}
-                  className="w-full text-left px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                  className="w-full text-left px-4 py-2 rounded-md bg-[var(--gv-primary)] text-white hover:bg-[var(--gv-primary-600)]"
                 >
                   {isSubscribed ? 'Agregar Publicación' : 'Obtener Plan'}
                 </button>
 
                 {subscription && (
-                  <div className="p-3 bg-blue-50 rounded-md text-sm">
-                    <p className="font-semibold text-blue-900">Plan Actual: {subscription.plan}</p>
-                    <p className="text-blue-700 text-xs mt-1">Estado: {subscription.status === 'active' ? 'Activo' : 'Inactivo'}</p>
+                  <div className="p-3 bg-[var(--gv-primary-100)] rounded-md text-sm">
+                    <p className="font-semibold text-[var(--gv-primary-600)]">Plan Actual: {subscription.plan}</p>
+                    <p className="text-[var(--gv-primary)] text-xs mt-1">Estado: {subscription.status === 'active' ? 'Activo' : 'Inactivo'}</p>
                   </div>
                 )}
 
@@ -128,8 +128,8 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
                   {Object.values(PLANS).map((plan) => (
                     <div
                       key={plan.name}
-                      className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 ${
-                        selectedPlan === plan.name ? "border-blue-500 bg-blue-50" : ""
+                      className={`border rounded-lg p-4 cursor-pointer hover:border-[var(--gv-primary)] ${
+                        selectedPlan === plan.name ? "border-[var(--gv-primary)] bg-[var(--gv-primary-100)]" : ""
                       }`}
                       onClick={() => setSelectedPlan(plan.name)}
                     >
@@ -152,7 +152,7 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
                 {selectedPlan && (
                   <button
                     onClick={handleSelectPlan}
-                    className="w-full mt-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="w-full mt-4 py-2 bg-[var(--gv-primary)] text-white rounded-md hover:bg-[var(--gv-primary-600)]"
                   >
                     Continuar con {selectedPlan}
                   </button>
@@ -171,7 +171,7 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
                     navigate('/my-publications/create');
                     onClose();
                   }}
-                  className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="w-full py-2 bg-[var(--gv-primary)] text-white rounded-md hover:bg-[var(--gv-primary-600)]"
                 >
                   Ir a crear publicación
                 </button>
@@ -195,7 +195,7 @@ export default function UserSidebar({ open, onClose }: UserSidebarProps) {
                     navigate('/profile');
                     onClose();
                   }}
-                  className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="w-full py-2 bg-[var(--gv-primary)] text-white rounded-md hover:bg-[var(--gv-primary-600)]"
                 >
                   Ir a mi perfil
                 </button>

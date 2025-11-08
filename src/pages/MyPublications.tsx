@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Plus, Edit, Trash2, FileText } from 'lucide-react';
 import { usePublications } from '../features/publications';
 
 export default function MyPublicationsPage() {
@@ -56,15 +57,19 @@ export default function MyPublicationsPage() {
     <div className="container py-12">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--gv-text)]">Mis Publicaciones</h1>
+          <h1 className="text-3xl font-bold text-[var(--gv-text)] flex items-center gap-3">
+            <FileText className="w-8 h-8 text-[var(--gv-primary)]" />
+            Mis Publicaciones
+          </h1>
           <p className="mt-2 text-[var(--gv-muted)]">
             Gestiona tus publicaciones y crea nuevas
           </p>
         </div>
         <button
           onClick={() => navigate('/my-publications/create')}
-          className="btn btn-primary"
+          className="btn btn-primary flex items-center gap-2"
         >
+          <Plus className="w-5 h-5" />
           Nueva Publicación
         </button>
       </div>
@@ -102,15 +107,17 @@ export default function MyPublicationsPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => navigate(`/my-publications/edit/${pub.id}`)}
-                      className="text-sm text-[var(--gv-primary)] hover:underline"
+                      className="p-2 text-[var(--gv-primary)] hover:bg-[var(--gv-primary-100)] rounded-lg transition"
+                      title="Editar"
                     >
-                      Editar
+                      <Edit className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setDeleteId(pub.id)}
-                      className="text-sm text-red-600 hover:underline"
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                      title="Eliminar"
                     >
-                      Eliminar
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>

@@ -145,11 +145,14 @@ export const useAuthStore = create<AuthStore>()(
 
         checkAuth: async () => {
           try {
+            set({ isLoading: true }, false, 'checkAuth/start');
+
             const accessToken = storageUtils.getAccessToken();
             const refreshToken = storageUtils.getRefreshToken();
 
             if (!accessToken || !refreshToken) {
               get().clearAuth();
+              set({ isLoading: false }, false, 'checkAuth/no-tokens');
               return;
             }
 
@@ -157,21 +160,44 @@ export const useAuthStore = create<AuthStore>()(
               await get().refreshAccessToken();
             }
 
-            await authApi.me();
+            // Obtener los datos actualizados del usuario desde el backend
+            const response = await authApi.me();
             
-            const userData = storageUtils.getUserData<User>();
-            
-            if (userData) {
-              get().setUser(userData);
+            if (response.success && response.user) {
+              // Construir el objeto User completo con los datos del backend
+              const userData = storageUtils.getUserData<User>();
+              const updatedUser: User = {
+                id: response.user.id,
+                email: response.user.email,
+                firstName: response.user.firstName,
+                lastName: response.user.lastName,
+                role: response.user.role, // ← Esto viene del backend actualizado
+                isActive: userData?.isActive ?? true,
+                phone: userData?.phone,
+                avatar: userData?.avatar,
+                bio: userData?.bio,
+                dateOfBirth: userData?.dateOfBirth,
+                address: userData?.address,
+                city: userData?.city,
+                country: userData?.country,
+                createdAt: userData?.createdAt ?? new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              };
+
+              get().setUser(updatedUser);
               set({ 
                 accessToken, 
-                refreshToken: refreshToken || null 
+                refreshToken: refreshToken || null,
+                isLoading: false 
               }, false, 'checkAuth/success');
             } else {
               get().clearAuth();
+              set({ isLoading: false }, false, 'checkAuth/invalid-response');
             }
-          } catch {
+          } catch (error) {
+            console.error('Error en checkAuth:', error);
             get().clearAuth();
+            set({ isLoading: false }, false, 'checkAuth/error');
           }
         },
       }),

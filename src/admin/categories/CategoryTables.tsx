@@ -28,6 +28,7 @@ const CategoryTable: React.FC<Props> = ({ search }) => {
 
   useEffect(() => {
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, search]);
 
   const prev = () => setPage((p) => Math.max(1, p - 1));
@@ -64,39 +65,42 @@ const CategoryTable: React.FC<Props> = ({ search }) => {
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm border p-4 overflow-x-auto">
-        <div className="text-sm text-gray-600 mb-3">
-          Categorías ({resp?.meta.total ?? 0})
+      <div className="card p-6 overflow-x-auto">
+        <div className="text-sm font-semibold text-[var(--gv-text)] mb-4 flex items-center gap-2">
+          <span className="text-lg">📁</span>
+          Total: {resp?.meta.total ?? 0} categorías
         </div>
 
         <table className="w-full text-sm">
-          <thead className="text-gray-600 border-b">
+          <thead className="border-b-2 border-[var(--gv-border)]">
             <tr>
-              <th className="text-left p-2">Nombre</th>
-              <th className="text-left p-2">Usuarios</th>
-              <th className="text-left p-2">Creado</th>
-              <th className="text-center p-2">Acciones</th>
+              <th className="text-left p-3 font-semibold text-[var(--gv-text)]">Nombre</th>
+              <th className="text-left p-3 font-semibold text-[var(--gv-text)]">Usuarios</th>
+              <th className="text-left p-3 font-semibold text-[var(--gv-text)]">Creado</th>
+              <th className="text-center p-3 font-semibold text-[var(--gv-text)]">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {(resp?.data ?? []).map((cat) => (
-              <tr key={cat.id} className="border-b hover:bg-gray-50">
-                <td className="p-2">{cat.name}</td>
-                <td className="p-2">{cat.userCount}</td>
-                <td className="p-2">{cat.createdAt}</td>
-                <td className="p-2 flex justify-center gap-2">
-                  <button
-                    onClick={() => openEditModal(cat)}
-                    className="px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => confirmDelete(cat.id)}
-                    className="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
-                  >
-                    Eliminar
-                  </button>
+              <tr key={cat.id} className="border-b border-[var(--gv-border)] hover:bg-[var(--gv-primary-100)] transition-colors">
+                <td className="p-3 text-[var(--gv-text)] font-medium">{cat.name}</td>
+                <td className="p-3 text-[var(--gv-muted)]">{cat.userCount}</td>
+                <td className="p-3 text-[var(--gv-muted)]">{cat.createdAt}</td>
+                <td className="p-3">
+                  <div className="flex justify-center gap-2">
+                    <button
+                      onClick={() => openEditModal(cat)}
+                      className="px-3 py-1.5 bg-[var(--gv-primary)] text-white rounded-lg text-xs font-semibold hover:bg-[var(--gv-primary-600)] transition-colors"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => confirmDelete(cat.id)}
+                      className="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700 transition-colors"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -104,23 +108,23 @@ const CategoryTable: React.FC<Props> = ({ search }) => {
         </table>
 
         {/* Paginación */}
-        <div className="flex items-center justify-center gap-3 mt-6">
+        <div className="flex items-center justify-center gap-4 mt-6">
           <button
             onClick={prev}
             disabled={!resp?.meta.hasPreviousPage}
-            className="h-9 w-9 grid place-items-center border rounded disabled:opacity-40 hover:bg-gray-100"
+            className="px-4 py-2 border border-[var(--gv-border)] rounded-lg disabled:opacity-40 hover:bg-[var(--gv-primary)] hover:text-white hover:border-[var(--gv-primary)] transition-colors font-medium text-[var(--gv-text)]"
           >
-            {"<"}
+            Anterior
           </button>
-          <span className="text-sm text-gray-600">
-            {resp?.meta.page ?? 1} / {resp?.meta.totalPages ?? 1}
+          <span className="text-sm font-medium text-[var(--gv-text)]">
+            Página {resp?.meta.page ?? 1} de {resp?.meta.totalPages ?? 1}
           </span>
           <button
             onClick={next}
             disabled={!resp?.meta.hasNextPage}
-            className="h-9 w-9 grid place-items-center border rounded disabled:opacity-40 hover:bg-gray-100"
+            className="px-4 py-2 border border-[var(--gv-border)] rounded-lg disabled:opacity-40 hover:bg-[var(--gv-primary)] hover:text-white hover:border-[var(--gv-primary)] transition-colors font-medium text-[var(--gv-text)]"
           >
-            {">"}
+            Siguiente
           </button>
         </div>
       </div>

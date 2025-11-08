@@ -83,7 +83,7 @@ const SubscriptionTable: React.FC<TableProps> = ({ search }) => {
           {currentItems.map((sub) => (
             <tr key={sub.id} className="border-b hover:bg-gray-50">
               <td className="p-2">{sub.name}</td>
-              <td className="p-2 text-blue-600 hover:underline cursor-pointer">
+              <td className="p-2 text-[var(--gv-primary)] hover:underline cursor-pointer">
                 {sub.email}
               </td>
               <td className="p-2">

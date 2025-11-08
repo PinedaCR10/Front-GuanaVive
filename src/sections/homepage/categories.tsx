@@ -140,7 +140,7 @@ export default function Categories() {
         {t(`items.${cat.slug}.desc`, { defaultValue: cat.description })}
       </p>
     </div>
-    <div className="pointer-events-none">
+    <div>
       <span className="inline-flex w-full items-center justify-center rounded-md bg-[#1f6fb2] text-white px-3 py-1.5 text-xs md:text-sm font-semibold">
         {t("SEE_MORE", { defaultValue: "Ver más" })}
       </span>

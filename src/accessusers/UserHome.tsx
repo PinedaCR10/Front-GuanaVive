@@ -66,7 +66,7 @@ export default function UserHome() {
                 {filtered.length} publicaciones encontradas
               </span>
               <span className="flex items-center gap-2">
-                <span className="inline-block h-2 w-2 rounded-full bg-blue-500"></span>
+                <span className="inline-block h-2 w-2 rounded-full bg-[var(--gv-primary)]"></span>
                 Página {page} de {totalPages || 1}
               </span>
             </div>

@@ -88,7 +88,12 @@ export const adsService = {
         status: backendStatus,
       });
 
-      if (!response.success || !response.data) {
+      console.log("Publications API Response:", response);
+
+      // response ya es ApiResponse<Publication[]>
+      // response.data es el array de publicaciones
+      if (!response.data || !Array.isArray(response.data)) {
+        console.warn("No publications data received or not an array");
         return {
           data: [],
           meta: {
@@ -142,7 +147,10 @@ export const adsService = {
         search: params?.search,
       });
 
-      if (!response.success || !response.data) {
+      // response ya es ApiResponse<Publication[]>
+      // response.data es el array de publicaciones
+      if (!response.data || !Array.isArray(response.data)) {
+        console.warn("No pending publications data received or not an array");
         return {
           data: [],
           meta: {

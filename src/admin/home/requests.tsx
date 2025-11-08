@@ -30,7 +30,7 @@ const RequestList: React.FC = () => {
   const getActionColor = (action: string) => {
     switch (action) {
       case "create":
-        return "bg-blue-50 text-blue-700";
+        return "bg-[var(--gv-primary-100)] text-[var(--gv-primary-600)]";
       case "update":
         return "bg-yellow-50 text-yellow-700";
       case "delete":
@@ -81,7 +81,7 @@ const RequestList: React.FC = () => {
       <section className="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
         <h2 className="text-lg font-medium mb-4">Actividades recientes</h2>
         <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gv-primary)]"></div>
         </div>
       </section>
     );

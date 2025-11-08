@@ -65,7 +65,7 @@ export default function UserProfile() {
                 {user.firstName} {user.lastName}
               </h1>
               <p className="text-[var(--gv-muted)]">{user.email}</p>
-              <span className="inline-block mt-1 px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+              <span className="inline-block mt-1 px-2 py-1 text-xs rounded-full bg-[var(--gv-primary-100)] text-[var(--gv-primary-600)]">
                 {user.role === 'admin' ? 'Administrador' : 'Usuario'}
               </span>
             </div>
