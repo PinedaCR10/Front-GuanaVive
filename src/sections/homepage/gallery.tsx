@@ -19,12 +19,12 @@ export default function Gallery() {
   // 6 imágenes (orden fijo)
   const fotos: Foto[] = useMemo(
     () => [
-      { id: "f1", src: "https://picsum.photos/seed/gv-a/1600/1100", alt: "Artesanos" },
-      { id: "f2", src: "https://picsum.photos/seed/gv-b/1500/1000", alt: "Baile en parque" },
-      { id: "f3", src: "https://picsum.photos/seed/gv-c/1500/900",  alt: "Fiestas nocturnas" },
-      { id: "f4", src: "https://picsum.photos/seed/gv-d/1600/900",  alt: "Paisaje verde" },
-      { id: "f5", src: "https://picsum.photos/seed/gv-e/1600/1000", alt: "Plaza llena" },
-      { id: "f6", src: "https://picsum.photos/seed/gv-f/1500/950",  alt: "Bandera Guanacaste" },
+      { id: "f1", src: "https://si.cultura.cr/_next/image?url=https%3A%2F%2Fsicultura-live.s3.amazonaws.com%2Fpublic%2Fmedia%2Fbt50-indigenous_pottery2_0_0.jpg&w=3840&q=75", alt: "Artesanos" },
+      { id: "f2", src: "https://www.ucr.ac.cr/medios/fotos/2017/rs183864_dsc_3304-web58d2cc98927f7.jpg", alt: "Baile en parque" },
+      { id: "f3", src: "https://primeroennoticias.com/wp-content/uploads/2017/01/FiestasTipicasNacionales2017.jpg",  alt: "Fiestas nocturnas" },
+      { id: "f4", src: "https://www.costaricajadetours.com/assets/img/gallery/gua-miravalles-volcano/slide-05.jpg",  alt: "Paisaje verde" },
+      { id: "f5", src: "https://www.periodicomensaje.com/images/especiales/fiestas-liberia-2018/fiestas-liberia-01.jpg", alt: "Plaza llena" },
+      { id: "f6", src: "https://gxtra-cr-dxtra.cdn.mediatiquepress.com/wp-content/uploads/2025/07/25-de-julio-Issac-villalta-11-800x532.jpg",  alt: "Bandera Guanacaste" },
     ],
     []
   );

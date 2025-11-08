@@ -25,8 +25,7 @@ export const AppRoutes = () => {
       <Route element={<GlobalLayout showTop />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/galeria" element={<Gallery />} />
-        <Route path="/galeria/:id" element={<GalleryDetail />} />
+        <Route path="/galeria" element={<GalleryDetail />} />
         <Route path="/categorias/:slug" element={<CategoriesDetail />} />
       </Route>
 
