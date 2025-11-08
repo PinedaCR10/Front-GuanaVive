@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import AuthLayout from './AuthLayout';
 import { validateRegister } from './validators';
 import { useAuth } from '../features/auth';
 import PasswordInput from './passwordImput';
+import { ENV } from '../core/config/env.config';
 
 export default function RegisterPage() {
   const { register, isLoading } = useAuth();
   const navigate = useNavigate();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const [form, setForm] = useState({
     firstName: '',
@@ -18,10 +21,18 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   function set<K extends keyof typeof form>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
   }
+
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+    if (token) {
+      setErrors((prev) => ({ ...prev, recaptcha: '' }));
+    }
+  };
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,6 +40,13 @@ export default function RegisterPage() {
     setErrors(v);
     setFormError(null);
     setSuccessMessage(null);
+    
+    // Validar reCAPTCHA
+    if (!recaptchaToken) {
+      setErrors((prev) => ({ ...prev, recaptcha: 'Por favor, completa el reCAPTCHA' }));
+      return;
+    }
+    
     if (Object.keys(v).length) return;
 
     try {
@@ -42,6 +60,9 @@ export default function RegisterPage() {
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Error al registrar';
       setFormError(errorMessage);
+      // Resetear reCAPTCHA en caso de error
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     }
   }
 
@@ -120,10 +141,24 @@ export default function RegisterPage() {
           )}
         </div>
 
+        {/* Google reCAPTCHA */}
+        <div className="flex flex-col items-center justify-center gap-2">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={ENV.RECAPTCHA_SITE_KEY}
+            onChange={handleRecaptchaChange}
+            theme="light"
+            size="normal"
+          />
+          {errors.recaptcha && (
+            <p className="text-xs text-red-600">{errors.recaptcha}</p>
+          )}
+        </div>
+
         <button
           type="submit"
-          disabled={isLoading}
-          className="mt-2 w-full rounded-lg bg-[var(--gv-primary)] px-4 py-2 font-semibold text-white shadow hover:bg-[var(--gv-primary-600)] disabled:opacity-60"
+          disabled={isLoading || !recaptchaToken}
+          className="mt-2 w-full rounded-lg bg-[var(--gv-primary)] px-4 py-2 font-semibold text-white shadow hover:bg-[var(--gv-primary-600)] disabled:opacity-60 disabled:cursor-not-allowed transition-all"
         >
           {isLoading ? 'Creando cuenta...' : 'Registrarme'}
         </button>
